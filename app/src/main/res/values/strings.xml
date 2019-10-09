@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ParkFinder</string>
+    <string name="appTitleTxt">Park Finder</string>
+    <string name="nameSearchTxt">Search by Name</string>
+    <string name="locationSearchTxt">Search by Location</string>
+    <string name="txtFeatureSearch">Search by Feature</string>
+    <string name="txtSeeAll">See All</string>
+    <string name="txtSeeFavourites">See Favourites</string>
+
+    <string name="yourLocation">Enter Your Location</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
