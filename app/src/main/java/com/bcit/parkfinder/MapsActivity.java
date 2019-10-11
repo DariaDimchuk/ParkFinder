@@ -1,3 +1,4 @@
+/*
 package com.bcit.parkfinder;
 
 import androidx.fragment.app.FragmentActivity;
@@ -35,6 +36,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+/*
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -45,3 +48,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
+*/
+

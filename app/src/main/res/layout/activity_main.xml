@@ -27,6 +27,7 @@
         android:layout_width="@dimen/widthSearchBtn"
         android:layout_height="@dimen/heightSearchBtn"
         android:text="@string/nameSearchTxt"
+        android:onClick="onClickSearchByName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

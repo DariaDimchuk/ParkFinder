@@ -6,7 +6,9 @@
     <string name="txtFeatureSearch">Search by Feature</string>
     <string name="txtSeeAll">See All</string>
     <string name="txtSeeFavourites">See Favourites</string>
+    <string name="btnSearch">Search</string>
 
     <string name="yourLocation">Enter Your Location</string>
+    <string name="parkName">Enter the park name to search</string>
     <string name="title_activity_maps">Map</string>
 </resources>
