@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/parkDetail">
 
     <TextView
         android:id="@+id/tvDetailName"
@@ -28,5 +29,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDetailName" />
+<!--    -->
+<!--    <fragment-->
+<!--        class="com.google.android.gms.maps.MapFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/map"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
