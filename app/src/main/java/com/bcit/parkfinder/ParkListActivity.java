@@ -85,11 +85,19 @@ public class ParkListActivity extends AppCompatActivity {
                         // Park Info
                         JSONObject p = parkJsonArray.getJSONObject(i).getJSONObject("fields");
 
+                        // authors (array)
+                        JSONArray coordinatesArray = p.getJSONArray("googlemapdest");
+                        double[] coordinates = new double[coordinatesArray.length()];
+                        for(int c = 0; c < coordinatesArray.length(); c++) {
+                            coordinates[c] = coordinatesArray.getDouble(c);
+                        }
+
                         String name = p.getString("name");
 
-                        // tmp hash map for single contact
+                        // Creating a Park object
                         Park park = new Park();
                         park.setName(name);
+                        park.setCoordinates(coordinates);
 
                         parkList.add(park);
                     }
@@ -147,6 +155,7 @@ public class ParkListActivity extends AppCompatActivity {
                     Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
                     Park park = parkList.get(i);
                     intent.putExtra("name", park.getName());
+                    intent.putExtra("coordinates", park.getCoordinates());
                     startActivity(intent);
                 }
             });

@@ -18,9 +18,15 @@ public class ParkDetailActivity extends AppCompatActivity {
 
         // Retrieve the park info
         String name = intent.getStringExtra("name");
+        double[] coordinates = intent.getDoubleArrayExtra("coordinates");
 
+        // Park name
         TextView nameView = findViewById(R.id.tvDetailName);
         nameView.setText(name);
+
+        // Park coordinates
+        TextView coordinatesView = findViewById(R.id.tvCoordinates);
+        coordinatesView.setText(coordinates[0] + ", " + coordinates[1]);
 
     }
 
