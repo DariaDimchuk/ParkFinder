@@ -19,12 +19,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.044" />
 
-    <fragment
-        class="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"/>
-
-
+    <TextView
+        android:id="@+id/tvCoordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDetailName" />
+<!--    -->
+<!--    <fragment-->
+<!--        class="com.google.android.gms.maps.MapFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/map"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
