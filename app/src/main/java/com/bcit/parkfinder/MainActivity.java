@@ -15,9 +15,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickSearchByName(View view) {
-
         Intent intent = new Intent(this, SearchByName.class);
         startActivity(intent);
+    }
 
+    public void onClickSeeAll(View view) {
+        Intent intent = new Intent(this, ParkListActivity.class);
+        startActivity(intent);
     }
 }
