@@ -19,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickSearchByLocation(View view) {
+        Intent intent = new Intent(this, SearchByLocation.class);
+        startActivity(intent);
+    }
+
     public void onClickSeeAll(View view) {
         Intent intent = new Intent(this, ParkListActivity.class);
         startActivity(intent);

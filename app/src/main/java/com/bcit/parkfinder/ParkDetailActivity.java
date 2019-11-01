@@ -56,7 +56,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         // Add a marker for park and move the camera
         LatLng parkLocation = new LatLng(coordinates[0], coordinates[1]);
         mMap.addMarker(new MarkerOptions().position(parkLocation).title(name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 6.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
 //    @Override
