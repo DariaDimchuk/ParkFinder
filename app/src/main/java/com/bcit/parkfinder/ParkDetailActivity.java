@@ -20,7 +20,8 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private GoogleMap mMap;
     private String name;
-    private double[] coordinates;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,9 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         // Retrieve the park info
         name = intent.getStringExtra("name");
-        coordinates = intent.getDoubleArrayExtra("coordinates");
+        latitude = intent.getDoubleExtra("latitude", 49.2495);  //default: bcit campus
+        longitude = intent.getDoubleExtra("longitude", 123.0008);
+
 
         // Park name
         TextView nameView = findViewById(R.id.tvDetailName);
@@ -39,7 +42,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         // Park coordinates
         TextView coordinatesView = findViewById(R.id.tvCoordinates);
-        coordinatesView.setText(coordinates[0] + ", " + coordinates[1]);
+        coordinatesView.setText(latitude + ", " + longitude);
 
         MapFragment mapFragment = MapFragment.newInstance();
         android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
@@ -54,7 +57,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker for park and move the camera
-        LatLng parkLocation = new LatLng(coordinates[0], coordinates[1]);
+        LatLng parkLocation = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(parkLocation).title(name));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }

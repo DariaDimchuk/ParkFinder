@@ -29,17 +29,13 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
     private String TAG = ParkListActivity.class.getSimpleName();
     private ProgressDialog pDialog;
-    private ListView lvParks;
+    private ListView lvParksList;
 
     // URL to get contacts JSON
     private static String SERVICE_URL = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300&facet=specialfeatures&facet=facilities&facet=washrooms&facet=neighbourhoodname";
     private ArrayList<Park> parkList;
 
     private GoogleMap mMap;
-    private String parkName;
-    private double[] parkCoordinates;
-
-    private ArrayList<double[]> coordinatesList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +47,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
 
         parkList = new ArrayList<Park>();
-        lvParks = findViewById(R.id.lvParkList);
+        lvParksList = findViewById(R.id.lvParkList);
         new GetContacts().execute();
     }
 
@@ -104,15 +100,17 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
                         // authors (array)
                         JSONArray coordinatesArray = p.getJSONArray("googlemapdest");
-                        double[] coordinates = new double[coordinatesArray.length()];
-                        for(int c = 0; c < coordinatesArray.length(); c++) {
-                            coordinates[c] = coordinatesArray.getDouble(c);
-                        }
+                        double latitude = coordinatesArray.getDouble(0);
+                        double longitude = coordinatesArray.getDouble(1);
 
                         String name = p.getString("name");
 
                         // Creating a Park object
-                        Park park = new Park(name, coordinates);
+
+                        Park park = new Park();
+                        park.setName(name);
+                        park.setLatitude(latitude);
+                        park.setLongitude(longitude);
 
                         parkList.add(park);
                     }
@@ -158,27 +156,41 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             ParksAdapter adapter = new ParksAdapter(ParkListActivity.this, parkList);
 
             // Attach the adapter to a ListView
-            lvParks.setAdapter(adapter);
+            lvParksList.setAdapter(adapter);
 
             // adds all park markers to the map fragment
             addAllParkMarkers();
 
             // move camera position to location of chosen park
-            lvParks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     // get park details
                     Park park = parkList.get(position);
-                    parkName = park.getName();
-                    parkCoordinates = park.getCoordinates();
+                    double latitude = park.getLatitude();
+                    double longitude = park.getLongitude();
 
                     // add marker and move camera position to park location
-                    LatLng parkLocation = new LatLng(parkCoordinates[0], parkCoordinates[1]);
+                    LatLng parkLocation = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
                 }
             });
 
+            // move camera position to location of chosen park
+            lvParksList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
+                    Park park = parkList.get(position);
+                    intent.putExtra("name", park.getName());
+                    intent.putExtra("latitude", park.getLatitude());
+                    intent.putExtra("longitude", park.getLongitude());
+                    startActivity(intent);
+
+                    return false;
+                }
+            });
         }
     }
 
@@ -188,10 +200,11 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
             // Get park details
             String parkName = park.getName();
-            double[] coordinates = park.getCoordinates();
+            double latitude = park.getLatitude();
+            double longitude = park.getLongitude();
 
             // Add a marker for park in parkList
-            LatLng parkLocation = new LatLng(coordinates[0], coordinates[1]);
+            LatLng parkLocation = new LatLng(latitude, longitude);
             mMap.addMarker(new MarkerOptions().position(parkLocation).title(parkName));
         }
     }
@@ -206,20 +219,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
-
-    // On Click
-//            lvParks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-//                {
-//                    Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
-//                    Park park = parkList.get(i);
-//                    intent.putExtra("name", park.getName());
-//                    intent.putExtra("coordinates", park.getCoordinates());
-//                    startActivity(intent);
-//                }
-//            });
 
 }
