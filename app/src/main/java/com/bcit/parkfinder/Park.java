@@ -1,5 +1,6 @@
 package com.bcit.parkfinder;
 
+
 public class Park
 {
     private int parkId;
@@ -19,6 +20,14 @@ public class Park
     private String neighbourhoodName;
 
     private String streetName;
+
+    public Park() {
+//        int parkId, String name, double latitude, double longitude
+//        this.parkId = parkId;
+//        this.name = name;
+//        this.latitude = latitude;
+//        this.longitude = longitude;
+    }
 
     public void setParkId(int parkId){
         this.parkId = parkId;
