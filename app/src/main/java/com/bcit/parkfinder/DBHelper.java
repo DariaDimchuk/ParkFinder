@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "VanParks.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private Context context;
 
     private String TAG = ParkListActivity.class.getSimpleName();
@@ -155,15 +155,32 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("PARK", null, values);
     }
 
+    private String getCreateFavParkTableSql() {
+        String sql = "";
+        sql += "CREATE TABLE FAV_PARK (";
+        sql += "FAV_ID INTEGER PRIMARY KEY AUTOINCREMENT, ";
+        sql += "PARK_ID INTEGER, ";
+        sql += "DELETED INTEGER DEFAULT 0, ";
+        sql += "FOREIGN KEY (FAV_ID) REFERENCES PARK (PARK_ID));";
+
+        return sql;
+    }
+
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(TAG, "DB OldV: " + oldVersion + "\tnewV: " + newVersion);
         try {
+            // Create Park Table
             if (oldVersion < 1) {
                 db.execSQL(getCreateParkTableSql());
             }
+            // Insert Park data into Park table
             if (oldVersion < 2) {
                 GetParks parkTask = new GetParks();
                 parkTask.execute();
+            }
+            // Create FAV_PARK Table
+            if (oldVersion < 3) {
+                db.execSQL(getCreateFavParkTableSql());
             }
         } catch (SQLException sqle) {
             String msg = "DB unavailable";
