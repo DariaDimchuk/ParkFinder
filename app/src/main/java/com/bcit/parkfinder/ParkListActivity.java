@@ -43,7 +43,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         setContentView(R.layout.activity_park_list);
 
         Intent intent = getIntent();    //creator
-        mode = intent.getStringExtra("mode");
+        mode = intent.getStringExtra("mode") == null ? "" : intent.getStringExtra("mode");
         if (mode != null && !mode.isEmpty())
             keyword = intent.getStringExtra("keyword");
 
@@ -75,6 +75,8 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 String whereSQL = "";
                 if (mode.equals("name"))
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
+                else
+                    whereSQL = "";
                 Log.e(TAG, "sql : " + whereSQL);
                 Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL, null);
 
@@ -143,6 +145,12 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void addAllParkMarkers() {
+
+        boolean ready = false;
+        while (!ready) {
+            ready = mMap != null;
+        }
+
         mMap.clear();
         for(Park park: parkList) {
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "VanParks.db";
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 2;
     private Context context;
 
     private String TAG = ParkListActivity.class.getSimpleName();
@@ -161,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (oldVersion < 1) {
                 db.execSQL(getCreateParkTableSql());
             }
-            if (oldVersion < 7) {
+            if (oldVersion < 2) {
                 GetParks parkTask = new GetParks();
                 parkTask.execute();
             }
