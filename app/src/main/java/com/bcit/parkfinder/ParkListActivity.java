@@ -1,9 +1,13 @@
 package com.bcit.parkfinder;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,29 +22,30 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ParkListActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private String mode = "";
+    private String keyword = "";
+
     private String TAG = ParkListActivity.class.getSimpleName();
-    private ProgressDialog pDialog;
     private ListView lvParksList;
 
-    // URL to get contacts JSON
-    private static String SERVICE_URL = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300&facet=specialfeatures&facet=facilities&facet=washrooms&facet=neighbourhoodname";
     private ArrayList<Park> parkList;
-
     private GoogleMap mMap;
+
+    private SQLiteDatabase db;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_list);
+
+        Intent intent = getIntent();    //creator
+        mode = intent.getStringExtra("mode");
+        if (mode != null && !mode.isEmpty())
+            keyword = intent.getStringExtra("keyword");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -48,99 +53,47 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
         parkList = new ArrayList<Park>();
         lvParksList = findViewById(R.id.lvParkList);
-        new GetContacts().execute();
+        new GetParksTask().execute();
     }
 
     /**
-     * Async task class to get json by making HTTP call
+     * Async task class to get SQL query result from DB
      */
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    private class GetParksTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(ParkListActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... arg0)
         {
-            HttpHandler sh = new HttpHandler();
-            String jsonStr = null;
+            SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
+            try {
+                db = helper.getReadableDatabase();
+                String whereSQL = "";
+                if (mode.equals("name"))
+                    whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
+                Log.e(TAG, "sql : " + whereSQL);
+                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL, null);
 
-            // Making a request to url and getting response
-            try
-            {
-                jsonStr = sh.makeServiceCall(SERVICE_URL);
-            }
-            catch (final IOException ioe)
-            {
-                Log.e(TAG, "Json parsing error: " + ioe.getMessage());
-            }
-
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null)
-            {
-                try
-                {
-                    // Getting JSON Array node
-                    JSONObject o = new JSONObject(jsonStr);
-                    JSONArray parkJsonArray = o.getJSONArray("records");
-
-                    // looping through All Items
-                    for (int i = 0; i < parkJsonArray.length(); i++)
-                    {
-                        // Park Info
-                        JSONObject p = parkJsonArray.getJSONObject(i).getJSONObject("fields");
-
-                        // authors (array)
-                        JSONArray coordinatesArray = p.getJSONArray("googlemapdest");
-                        double latitude = coordinatesArray.getDouble(0);
-                        double longitude = coordinatesArray.getDouble(1);
-
-                        String name = p.getString("name");
-
-                        // Creating a Park object
-
-                        Park park = new Park();
-                        park.setName(name);
-                        park.setLatitude(latitude);
-                        park.setLongitude(longitude);
-
+                if (cursor.moveToFirst()) {
+                    do {
+                        int id = cursor.getInt(0);
+                        String name = cursor.getString(1);
+                        double latitude = cursor.getDouble(2);
+                        double longitude = cursor.getDouble(3);
+                        Park park = new Park(id, name, latitude, longitude);
                         parkList.add(park);
-                    }
+                    } while (cursor.moveToNext());
                 }
-                catch (final JSONException e)
-                {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
-                }
-            }
-            else
-            {
-                Log.e(TAG, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+            } catch (SQLiteException sqlex) {
+                String msg = "DB unavailable";
+                msg += "\n\n" + sqlex.toString();
+
+                Toast t = Toast.makeText(ParkListActivity.this, msg, Toast.LENGTH_LONG);
+                t.show();
             }
             return null;
         }
@@ -148,11 +101,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-
             ParksAdapter adapter = new ParksAdapter(ParkListActivity.this, parkList);
 
             // Attach the adapter to a ListView

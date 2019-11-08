@@ -4,29 +4,35 @@ package com.bcit.parkfinder;
 public class Park
 {
     private int parkId;
-
-    private boolean washroom;
-
-    private double latitude;
-
-    private double longitude;
-
     private String name;
-
-    private String neighbourhoodurl;
-
-    private String streetNumber;
-
+    private double latitude;
+    private double longitude;
+    private String washroom;
     private String neighbourhoodName;
-
+    private String neighbourhoodurl;
+    private String streetNumber;
     private String streetName;
 
-    public Park() {
-//        int parkId, String name, double latitude, double longitude
-//        this.parkId = parkId;
-//        this.name = name;
-//        this.latitude = latitude;
-//        this.longitude = longitude;
+    public Park() {}
+
+    public Park(int parkId, String name, double latitude, double longitude, String washroom,
+                String neighbourhoodName, String neighbourhoodurl, String streetNumber, String streetName) {
+        this.parkId = parkId;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.washroom = washroom;
+        this.neighbourhoodName = neighbourhoodName;
+        this.neighbourhoodurl = neighbourhoodurl;
+        this.streetNumber = streetNumber;
+        this.streetName = streetName;
+    }
+
+    public Park(int parkId, String name, double latitude, double longitude) {
+        this.parkId = parkId;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void setParkId(int parkId){
@@ -35,10 +41,10 @@ public class Park
     public int getParkId(){
         return this.parkId;
     }
-    public void setWashroom(boolean washroom){
+    public void setWashroom(String washroom){
         this.washroom = washroom;
     }
-    public boolean getWashroom(){
+    public String getWashroom(){
         return this.washroom;
     }
     public void setLatitude(double latitude){
@@ -82,5 +88,9 @@ public class Park
     }
     public String getStreetName(){
         return this.streetName;
+    }
+
+    public String toString() {
+        return "" + this.parkId + ", " + this.name + ", " + this.latitude + ", " + this.longitude;
     }
 }
