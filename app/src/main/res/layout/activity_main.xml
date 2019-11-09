@@ -11,7 +11,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/appTitleTxt"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
@@ -23,18 +23,17 @@
         app:layout_constraintVertical_bias="0.044" />
 
     <Button
-        android:id="@+id/btnNameSearch"
+        android:id="@+id/btnFeatureSearch"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/widthSearchBtn"
         android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/nameSearchTxt"
-        android:onClick="onClickSearchByName"
+        android:text="@string/txtFeatureSearch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.245" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.1" />
 
     <Button
         android:id="@+id/btnLocSearch"
@@ -44,18 +43,19 @@
         android:text="@string/locationSearchTxt"
         android:onClick="onClickSearchByLocation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnNameSearch"
+        app:layout_constraintEnd_toEndOf="@+id/btnFeatureSearch"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnNameSearch"
-        app:layout_constraintTop_toBottomOf="@+id/btnNameSearch"
+        app:layout_constraintStart_toStartOf="@+id/btnFeatureSearch"
+        app:layout_constraintTop_toBottomOf="@+id/btnFeatureSearch"
         app:layout_constraintVertical_bias="0.053" />
 
     <Button
-        android:id="@+id/btnFeatureSearch"
+        android:id="@+id/btnNameSearch"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/widthSearchBtn"
         android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/txtFeatureSearch"
+        android:text="@string/nameSearchTxt"
+        android:onClick="onClickSearchByName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btnLocSearch"
         app:layout_constraintHorizontal_bias="1.0"

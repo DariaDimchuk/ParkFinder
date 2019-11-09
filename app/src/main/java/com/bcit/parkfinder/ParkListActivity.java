@@ -72,12 +72,14 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
             try {
                 db = helper.getReadableDatabase();
+
                 String whereSQL = "";
                 if (mode.equals("name"))
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
-                else
-                    whereSQL = "";
-                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL, null);
+                else if (mode.equals("location"))
+                    whereSQL = " WHERE NEIGHBORHOOD_NAME = '" + keyword + "'";
+
+                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {

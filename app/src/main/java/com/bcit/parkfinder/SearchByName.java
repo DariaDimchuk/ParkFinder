@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class SearchByName extends AppCompatActivity {
 
-    Button btnAdd;
+    Button btnSearch;
     EditText etParkName;
 
     @Override
@@ -19,8 +19,8 @@ public class SearchByName extends AppCompatActivity {
         setContentView(R.layout.activity_search_by_name);
 
         etParkName = findViewById(R.id.etParkName);
-        btnAdd = findViewById(R.id.btnSearch);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        btnSearch = findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SearchByName.this, ParkListActivity.class);
