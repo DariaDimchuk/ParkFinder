@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/flowerwallpaper_filter"
     tools:context=".SearchByName">
 
 
@@ -15,8 +14,7 @@
         android:layout_marginTop="150dp"
         android:gravity="center"
         android:text="@string/nameSearchTxt"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/BasicBlack"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +37,7 @@
 
     <Button
         android:id="@+id/btnSearch"
-        android:background="@android:color/holo_green_dark"
-        android:textColor="@android:color/white"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/widthSearchBtn"
         android:layout_height="@dimen/heightSearchBtn"
         android:layout_marginTop="30dp"
