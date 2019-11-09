@@ -13,6 +13,9 @@ public class Park
     private String streetNumber;
     private String streetName;
 
+    private String facility;
+    private String feature;
+
     public Park() {}
 
     public Park(int parkId, String name, double latitude, double longitude, String washroom,
@@ -90,7 +93,24 @@ public class Park
         return this.streetName;
     }
 
+    public String getFacility() {
+        return facility;
+    }
+
+    public void setFacility(String facility) {
+        this.facility = facility;
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+
     public String toString() {
         return "" + this.parkId + ", " + this.name + ", " + this.latitude + ", " + this.longitude;
     }
+
 }

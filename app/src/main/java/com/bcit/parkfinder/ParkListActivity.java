@@ -77,7 +77,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
                 else
                     whereSQL = "";
-                Log.e(TAG, "sql : " + whereSQL);
                 Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL, null);
 
                 if (cursor.moveToFirst()) {

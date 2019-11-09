@@ -16,17 +16,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "VanParks.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 1;
     private Context context;
 
     private String TAG = ParkListActivity.class.getSimpleName();
-    private ProgressDialog pDialog;
-    private ArrayList<Park> parkList = new ArrayList<Park>();
-    private static String SERVICE_URL = "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300&facet=specialfeatures&facet=facilities&facet=washrooms&facet=neighbourhoodname";
+    private static String[] SERVICE_URL = {
+            "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300",
+            "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-facilities&rows=1000",
+            "https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100"
+    };
 
     public DBHelper(Context context) {
         // The 3'rd parameter (null) is an advanced feature relating to cursors
@@ -53,74 +54,90 @@ public class DBHelper extends SQLiteOpenHelper {
         protected Void doInBackground(Void... arg0)
         {
             HttpHandler sh = new HttpHandler();
-            String jsonStr = null;
+            for (int dataN = 0; dataN < 3; dataN++) {
 
-            // Making a request to url and getting response
-            try {
-                jsonStr = sh.makeServiceCall(SERVICE_URL);
-            } catch (final IOException ioe) {
-                Log.e(TAG, "Json parsing error: " + ioe.getMessage());
-            }
+                String jsonStr = null;
 
-            Log.e(TAG, "Response from url: " + jsonStr);
-
-            if (jsonStr != null) {
+                // Making a request to url and getting response
                 try {
-                    // Getting JSON Array node
-                    JSONObject o = new JSONObject(jsonStr);
-                    JSONArray parkJsonArray = o.getJSONArray("records");
+                    jsonStr = sh.makeServiceCall(SERVICE_URL[dataN]);
+                } catch (final IOException ioe) {
+                    Log.e(TAG, "Json parsing error: " + ioe.getMessage());
+                }
+                Log.e(TAG, "Response from url " + dataN + ": " + jsonStr);
 
-                    // looping through All Items
-                    for (int i = 0; i < parkJsonArray.length(); i++) {
-                        // Park Info
-                        JSONObject p = parkJsonArray.getJSONObject(i).getJSONObject("fields");
-                        JSONArray coordinatesArray = p.getJSONArray("googlemapdest");
-                        double latitude = coordinatesArray.getDouble(0);
-                        double longitude = coordinatesArray.getDouble(1);
-                        String name = p.getString("name");
-                        int parkId = p.getInt("parkid");
-                        String washroom = p.getString("washrooms");
-                        String neighbourhoodName = p.getString("neighbourhoodname");
-                        String neighbourhoodUrl = p.getString("neighbourhoodurl");
-                        String streetName = p.getString("streetname");
-                        String streetNumber = p.getString("streetnumber");
+                if (jsonStr != null) {
+                    try {
+                        // Getting JSON Array node
+                        JSONObject o = new JSONObject(jsonStr);
+                        JSONArray parkJsonArray = o.getJSONArray("records");
 
-                        // Creating a Park object
-                        Park park = new Park(parkId, name, latitude, longitude, washroom,
-                                    neighbourhoodName, neighbourhoodUrl, streetNumber, streetName);
-
-                        // Insert a park to the DB
+                        // Initialize SQL helper
                         SQLiteOpenHelper helper = new DBHelper(context);
                         SQLiteDatabase db = helper.getWritableDatabase();
-                        insertPark(db, park);
-                        parkList.add(park);
-                        Log.e(TAG, "Park added: " + i);
+
+                        // looping through All Items
+                        for (int i = 0; i < parkJsonArray.length(); i++) {
+                            // Park Info
+                            JSONObject p = parkJsonArray.getJSONObject(i).getJSONObject("fields");
+                            int parkId = p.getInt("parkid");
+
+                            // First Json Data - Park (Table: PARK)
+                            if (dataN == 0) {
+                                JSONArray coordinatesArray = p.getJSONArray("googlemapdest");
+                                double latitude = coordinatesArray.getDouble(0);
+                                double longitude = coordinatesArray.getDouble(1);
+                                String name = p.getString("name");
+                                String washroom = p.getString("washrooms");
+                                String neighbourhoodName = p.getString("neighbourhoodname");
+                                String neighbourhoodUrl = p.getString("neighbourhoodurl");
+                                String streetName = p.getString("streetname");
+                                String streetNumber = p.getString("streetnumber");
+
+                                Park park = new Park(parkId, name, latitude, longitude, washroom,
+                                        neighbourhoodName, neighbourhoodUrl, streetNumber, streetName);
+
+                                insertPark(db, park);
+
+                            // Second Json Data - Park Facilities (Table: PARK_FACILITY)
+                            } else if (dataN == 1) {
+                                String facility = p.getString("facilitytype");
+                                Park park = new Park();
+                                park.setParkId(parkId);
+                                park.setFacility(facility);
+
+                                insertParkFacility(db, park);
+
+                            // Third Json Data - Park Feature (Table: PARK_FEATURE)
+                            } else {
+                                String feature = p.getString("specialfeature");
+                                Park park = new Park();
+                                park.setParkId(parkId);
+                                park.setFeature(feature);
+
+                                insertParkFeature(db, park);
+                            }
+                        }
+                    } catch (final JSONException e) {
+                        Log.e(TAG, "Json parsing/DB conversion error: " + e.getMessage());
                     }
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } else {
+                    Log.e(TAG, "Couldn't get json from server.");
                 }
-            } else  {
-                Log.e(TAG, "Couldn't get json from server.");
             }
+            Log.e(TAG, "DB Work Done.");
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            // set parkList to DBHelper
-            setParkList(parkList);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         updateMyDatabase(sqLiteDatabase, i, i1);
-    }
-
-    public void setParkList(ArrayList<Park> parkList) {
-        this.parkList = parkList;
     }
 
     private String getCreateParkTableSql() {
@@ -139,7 +156,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-
     private void insertPark(SQLiteDatabase db, Park park) {
         ContentValues values = new ContentValues();
         values.put("PARK_ID", park.getParkId());
@@ -153,6 +169,44 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("STREET_NAME", park.getStreetName());
 
         db.insert("PARK", null, values);
+    }
+
+    private String getCreateParkFacilityTableSql() {
+        String sql = "";
+        sql += "CREATE TABLE PARK_FACILITY (";
+        sql += "ID INTEGER PRIMARY KEY AUTOINCREMENT, ";
+        sql += "PARK_ID INTEGER, ";
+        sql += "FACILITY TEXT, ";
+        sql += "FOREIGN KEY (ID) REFERENCES PARK (PARK_ID));";
+
+        return sql;
+    }
+
+    private void insertParkFacility(SQLiteDatabase db, Park park) {
+        ContentValues values = new ContentValues();
+        values.put("PARK_ID", park.getParkId());
+        values.put("FACILITY", park.getFacility());
+
+        db.insert("PARK_FACILITY", null, values);
+    }
+
+    private String getCreateParkFeatureTableSql() {
+        String sql = "";
+        sql += "CREATE TABLE PARK_FEATURE (";
+        sql += "ID INTEGER PRIMARY KEY AUTOINCREMENT, ";
+        sql += "PARK_ID INTEGER, ";
+        sql += "FEATURE TEXT, ";
+        sql += "FOREIGN KEY (ID) REFERENCES PARK (PARK_ID));";
+
+        return sql;
+    }
+
+    private void insertParkFeature(SQLiteDatabase db, Park park) {
+        ContentValues values = new ContentValues();
+        values.put("PARK_ID", park.getParkId());
+        values.put("FEATURE", park.getFeature());
+
+        db.insert("PARK_FEATURE", null, values);
     }
 
     private String getCreateFavParkTableSql() {
@@ -169,19 +223,17 @@ public class DBHelper extends SQLiteOpenHelper {
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(TAG, "DB OldV: " + oldVersion + "\tnewV: " + newVersion);
         try {
-            // Create Park Table
+
             if (oldVersion < 1) {
                 db.execSQL(getCreateParkTableSql());
-            }
-            // Insert Park data into Park table
-            if (oldVersion < 2) {
+                db.execSQL(getCreateParkFacilityTableSql());
+                db.execSQL(getCreateParkFeatureTableSql());
+                db.execSQL(getCreateFavParkTableSql());
+
                 GetParks parkTask = new GetParks();
                 parkTask.execute();
             }
-            // Create FAV_PARK Table
-            if (oldVersion < 3) {
-                db.execSQL(getCreateFavParkTableSql());
-            }
+
         } catch (SQLException sqle) {
             String msg = "DB unavailable";
             msg += "\n\n" + sqle.toString();
