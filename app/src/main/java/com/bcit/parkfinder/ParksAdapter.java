@@ -5,9 +5,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,16 @@ public class ParksAdapter extends ArrayAdapter<Park> {
         // Populate the data into the template view using the data object
         tvTitle.setText(park.getName());
         tvAddress.setText(park.getStreetNumber() + " " + park.getStreetName());
+
+
+        ImageButton detailsIcon = convertView.findViewById(R.id.btnInfoDetails);
+        detailsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("\n\nIMG BTN CLCIKED\n\n");
+            }
+        });
+
 
         // Return the completed view to render on screen
         return convertView;

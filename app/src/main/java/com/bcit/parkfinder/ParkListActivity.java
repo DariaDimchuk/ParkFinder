@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -133,16 +134,18 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+
+
             // move camera position to location of chosen park
             lvParksList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
                     Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
                     Park park = parkList.get(position);
-                    intent.putExtra("id", park.getParkId());
-                    intent.putExtra("name", park.getName());
-                    intent.putExtra("latitude", park.getLatitude());
-                    intent.putExtra("longitude", park.getLongitude());
+                    Bundle b = new Bundle();
+                    b.putSerializable("park", park);
+                    intent.putExtra("bundle", b);
+
                     startActivity(intent);
 
                     return false;
