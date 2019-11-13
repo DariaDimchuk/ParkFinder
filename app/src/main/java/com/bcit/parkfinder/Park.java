@@ -31,11 +31,13 @@ public class Park
         this.streetName = streetName;
     }
 
-    public Park(int parkId, String name, double latitude, double longitude) {
+    public Park(int parkId, String name, double latitude, double longitude, String streetNumber, String streetName) {
         this.parkId = parkId;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.streetNumber = streetNumber;
+        this.streetName = streetName;
     }
 
     public void setParkId(int parkId){

@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "VanParks.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private Context context;
 
     private String TAG = ParkListActivity.class.getSimpleName();
@@ -220,6 +220,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
+    // For testing purpose -- To be deleted later
+    private void insertFavPark(SQLiteDatabase db, int parkId) {
+        ContentValues values = new ContentValues();
+        values.put("PARK_ID", parkId);
+        db.insert("FAV_PARK", null, values);
+    }
+
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(TAG, "DB OldV: " + oldVersion + "\tnewV: " + newVersion);
         try {
@@ -232,6 +239,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 GetParks parkTask = new GetParks();
                 parkTask.execute();
+            }
+
+            // For testing purpose -- To be deleted later
+            if (oldVersion < 2) {
+                insertFavPark(db, 1);
+                insertFavPark(db, 2);
+                insertFavPark(db, 3);
+                insertFavPark(db, 4);
+                insertFavPark(db, 5);
             }
 
         } catch (SQLException sqle) {

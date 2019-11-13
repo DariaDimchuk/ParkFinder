@@ -78,8 +78,10 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
                 else if (mode.equals("location"))
                     whereSQL = " WHERE NEIGHBORHOOD_NAME = '" + keyword + "'";
+                else if (mode.equals("favourite"))
+                    whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
-                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE FROM PARK" + whereSQL + " ORDER BY NAME", null);
+                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE, STREET_NUMBER, STREET_NAME FROM PARK" + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {
@@ -87,7 +89,10 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                         String name = cursor.getString(1);
                         double latitude = cursor.getDouble(2);
                         double longitude = cursor.getDouble(3);
-                        Park park = new Park(id, name, latitude, longitude);
+                        String stNumber = cursor.getString(4);
+                        String stName = cursor.getString(5);
+
+                        Park park = new Park(id, name, latitude, longitude, stNumber, stName);
                         parkList.add(park);
                     } while (cursor.moveToNext());
                 }
@@ -134,6 +139,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
                     Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
                     Park park = parkList.get(position);
+                    intent.putExtra("id", park.getParkId());
                     intent.putExtra("name", park.getName());
                     intent.putExtra("latitude", park.getLatitude());
                     intent.putExtra("longitude", park.getLongitude());
