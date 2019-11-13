@@ -29,9 +29,11 @@ public class ParksAdapter extends ArrayAdapter<Park> {
         }
         // Lookup view for data population
         TextView tvTitle = convertView.findViewById(R.id.tvName);
+        TextView tvAddress = convertView.findViewById(R.id.tvAddress);
 
         // Populate the data into the template view using the data object
         tvTitle.setText(park.getName());
+        tvAddress.setText(park.getStreetNumber() + " " + park.getStreetName());
 
         // Return the completed view to render on screen
         return convertView;

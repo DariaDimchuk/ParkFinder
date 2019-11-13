@@ -55,4 +55,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ParkListActivity.class);
         startActivity(intent);
     }
+
+    public void onClickSeeFavourites(View view) {
+        Intent intent = new Intent(this, ParkListActivity.class);
+        intent.putExtra("mode", "favourite");
+        intent.putExtra("keyword", "favourite");
+        startActivity(intent);
+    }
 }
