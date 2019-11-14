@@ -9,10 +9,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -122,7 +120,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     // get park details
                     Park park = parkList.get(position);
                     double latitude = park.getLatitude();
@@ -131,24 +128,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     // add marker and move camera position to park location
                     LatLng parkLocation = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
-                }
-            });
-
-
-
-            // move camera position to location of chosen park
-            lvParksList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
-                    Park park = parkList.get(position);
-                    Bundle b = new Bundle();
-                    b.putSerializable("park", park);
-                    intent.putExtra("bundle", b);
-
-                    startActivity(intent);
-
-                    return false;
                 }
             });
         }

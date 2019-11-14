@@ -2,31 +2,32 @@ package com.bcit.parkfinder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
 public class ParksAdapter extends ArrayAdapter<Park> {
     Context _context;
+    int position;
+
     public ParksAdapter(Context context, ArrayList<Park> parks) {
         super(context, 0, parks);
         _context = context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Activity activity = (Activity) _context;
         // Get the data item for this position
+
+        this.position = position;
         Park park = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -42,10 +43,19 @@ public class ParksAdapter extends ArrayAdapter<Park> {
 
 
         ImageButton detailsIcon = convertView.findViewById(R.id.btnInfoDetails);
+        detailsIcon.setFocusable(false); //allows click listener for list row to work
+
         detailsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("\n\nIMG BTN CLCIKED\n\n");
+                Park park = getItem(position);
+
+                Intent intent = new Intent(_context, ParkDetailActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("park", park);
+                intent.putExtra("bundle", b);
+
+                _context.startActivity(intent);
             }
         });
 
