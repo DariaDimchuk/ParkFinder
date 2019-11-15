@@ -75,7 +75,8 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
 
             String baseSQL = "SELECT * FROM PARK";
-            String joinSQL = "SELECT * FROM PARK P" +
+            String joinSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
+                    " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P" +
                     " LEFT JOIN PARK_FEATURE PF ON PF.PARK_ID = P.PARK_ID" +
                     " LEFT JOIN PARK_FACILITY PFF ON PFF.PARK_ID = P.PARK_ID";
 
