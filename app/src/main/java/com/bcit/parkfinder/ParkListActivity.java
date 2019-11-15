@@ -75,7 +75,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
 
             String baseSQL = "SELECT * FROM PARK";
-            String joinSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
+            String joinSQL = "SELECT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
                     " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P" +
                     " LEFT JOIN PARK_FEATURE PF ON PF.PARK_ID = P.PARK_ID" +
                     " LEFT JOIN PARK_FACILITY PFF ON PFF.PARK_ID = P.PARK_ID";
@@ -92,10 +92,14 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
                 else if (mode.equals("feature")) {
                     baseSQL = joinSQL;
-                    whereSQL = " WHERE (1=1)";
-                    for (int i = 0; i < features.size(); i++) {
-                        whereSQL += " AND (FEATURE = '" + features.get(i) + "' OR " + "FACILITY = '" + features.get(i) + "')";
+                    int num = features.size();
+                    String conditions = "(";
+                    for (int i = 0; i < num; i++) {
+                        conditions += "'" + features.get(i) + (i == num - 1 ? "')" : "', ");
                     }
+                    whereSQL = " WHERE facility IN " + conditions + " OR feature IN " + conditions +
+                            " GROUP BY p.park_id " +
+                            " HAVING COUNT(DISTINCT facility) = " + num + " or COUNT(DISTINCT feature) = " + num;
                     System.out.println(whereSQL);
                 }
 
