@@ -239,15 +239,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 parkTask.execute();
             }
 
-            // For testing purpose -- To be deleted later
-            if (oldVersion < 2) {
-                insertFavPark(db, 1);
-                insertFavPark(db, 2);
-                insertFavPark(db, 3);
-                insertFavPark(db, 4);
-                insertFavPark(db, 5);
-            }
-
         } catch (SQLException sqle) {
             String msg = "DB unavailable";
             msg += "\n\n" + sqle.toString();

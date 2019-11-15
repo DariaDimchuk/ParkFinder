@@ -119,20 +119,19 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     protected void updateFavouritedStatus(){
-        SQLiteOpenHelper helper = new DBHelper(this);
+        DBHelper helper = new DBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
-        DBHelper dbHelper = new DBHelper(this);
 
         if(park.isFavourite()){
             //remove from list
-            System.out.println("REMOVING FROM LIST"); //TODO change to update db
+            System.out.println("REMOVING FROM LIST");
             park.setFavourite(false);
-            dbHelper.removeFavPark(db, park.getParkId());
+            helper.removeFavPark(db, park.getParkId());
         } else{
             //adding to list
-            System.out.println("ADDING TO LIST"); //TODO change to update db
+            System.out.println("ADDING TO LIST");
             park.setFavourite(true);
-            dbHelper.insertFavPark(db, park.getParkId());
+            helper.insertFavPark(db, park.getParkId());
         }
 
         updateFavouriteButtonIconAndText();
