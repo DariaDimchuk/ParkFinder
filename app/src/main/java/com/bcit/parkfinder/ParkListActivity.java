@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +37,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
     private ArrayList<String> features;
     private GoogleMap mMap;
 
+    SQLiteOpenHelper helper;
     private SQLiteDatabase db;
     
     @Override
@@ -47,8 +49,9 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         mode = intent.getStringExtra("mode") == null ? "" : intent.getStringExtra("mode");
         if (mode.equals("feature") ) {
             features = intent.getStringArrayListExtra("features");
-        } else if (!mode.isEmpty())
+        } else if (!mode.isEmpty()) {
             keyword = intent.getStringExtra("keyword");
+        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -57,6 +60,36 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         parkList = new ArrayList<Park>();
         lvParksList = findViewById(R.id.lvParkList);
         new GetParksTask().execute();
+    }
+
+    @Override
+    public void onRestart() {
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        super.onRestart();
+
+        /*
+            1. When it's a favourite mode, update the park list to reflect the newly added/removed fav park.
+            2. When it's other modes, update a Favourite status of all parks in the park list,
+               so that when they go back to a detail page, it can reflect the updated fav status.
+         */
+        if (mode.equals("favourite")) {
+            System.out.println("REFRESH THE PARK LIST");
+            new GetParksTask().execute();
+        } else {
+            helper = new DBHelper(ParkListActivity.this);
+            db = helper.getReadableDatabase();
+
+            for (Park p : parkList) {
+                int id = p.getParkId();
+                Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + id, null);
+                if (favCursor.getCount() > 0) {
+                    p.setFavourite(true);
+                } else {
+                    p.setFavourite(false);
+                }
+            }
+
+        }
     }
 
     /**
@@ -72,25 +105,29 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected Void doInBackground(Void... arg0)
         {
-            SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
+            helper = new DBHelper(ParkListActivity.this);
 
-            String baseSQL = "SELECT * FROM PARK";
-            String joinSQL = "SELECT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
+            String baseSQL = "SELECT DISTINCT * FROM PARK";
+            String joinSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
                     " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P" +
                     " LEFT JOIN PARK_FEATURE PF ON PF.PARK_ID = P.PARK_ID" +
                     " LEFT JOIN PARK_FACILITY PFF ON PFF.PARK_ID = P.PARK_ID";
 
             try {
+                parkList.clear();
                 db = helper.getReadableDatabase();
 
                 String whereSQL = "";
-                if (mode.equals("name"))
+                if (mode.equals("name")) {
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
-                else if (mode.equals("location"))
+
+                } else if (mode.equals("location")) {
                     whereSQL = " WHERE NEIGHBORHOOD_NAME = '" + keyword + "'";
-                else if (mode.equals("favourite"))
+
+                } else if (mode.equals("favourite")) {
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
-                else if (mode.equals("feature")) {
+
+                } else if (mode.equals("feature") && features.size() > 0) {
                     baseSQL = joinSQL;
                     int num = features.size();
                     String conditions = "(";
@@ -102,7 +139,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                             " HAVING COUNT(DISTINCT facility) = " + num + " or COUNT(DISTINCT feature) = " + num;
                     System.out.println(whereSQL);
                 }
-
 
                 Cursor cursor = db.rawQuery(baseSQL + whereSQL + " ORDER BY NAME", null);
 
@@ -167,31 +203,41 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            ParksAdapter adapter = new ParksAdapter(ParkListActivity.this, parkList);
+            TextView tvNoResult = findViewById(R.id.tvNoResult);
 
-            // Attach the adapter to a ListView
-            lvParksList.setAdapter(adapter);
+            if (parkList.isEmpty()) {
+                tvNoResult.setVisibility(View.VISIBLE);
+            } else {
 
-            // adds all park markers to the map fragment
-            addAllParkMarkers();
+                tvNoResult.setVisibility(View.GONE);
 
-            // move camera position to location of chosen park
-            lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // get park details
-                    Park park = parkList.get(position);
-                    double latitude = park.getLatitude();
-                    double longitude = park.getLongitude();
-                    String parkName = park.getName();
+                ParksAdapter adapter = new ParksAdapter(ParkListActivity.this, parkList);
 
-                    // add marker and move camera position to park location
-                    LatLng parkLocation = new LatLng(latitude, longitude);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 14f));
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(parkLocation).title(parkName));
-                    marker.showInfoWindow();
-                }
-            });
+                // Attach the adapter to a ListView
+                lvParksList.setAdapter(adapter);
+
+                // adds all park markers to the map fragment
+                addAllParkMarkers();
+
+                // move camera position to location of chosen park
+                lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // get park details
+                        Park park = parkList.get(position);
+                        double latitude = park.getLatitude();
+                        double longitude = park.getLongitude();
+                        String parkName = park.getName();
+
+                        // add marker and move camera position to park location
+                        LatLng parkLocation = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 14f));
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(parkLocation).title(parkName));
+                        marker.showInfoWindow();
+                    }
+                });
+            }
+
         }
     }
 

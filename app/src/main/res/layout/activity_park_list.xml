@@ -20,6 +20,16 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvNoResult"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/noParkFound"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
