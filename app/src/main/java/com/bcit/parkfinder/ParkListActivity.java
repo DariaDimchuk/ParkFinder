@@ -33,6 +33,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
     private ListView lvParksList;
 
     private ArrayList<Park> parkList;
+    private ArrayList<String> features;
     private GoogleMap mMap;
 
     private SQLiteDatabase db;
@@ -44,6 +45,9 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
 
         Intent intent = getIntent();    //creator
         mode = intent.getStringExtra("mode") == null ? "" : intent.getStringExtra("mode");
+        if (mode.equals("feature") ) {
+            features = intent.getStringArrayListExtra("features");
+        }
         if (mode != null && !mode.isEmpty())
             keyword = intent.getStringExtra("keyword");
 

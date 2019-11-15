@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
             db.close();
     }
 
+    public void onClickSearchByFeature(View view) {
+        Intent intent = new Intent(this, SearchByFeature.class);
+        startActivity(intent);
+    }
+
     public void onClickSearchByName(View view) {
         Intent intent = new Intent(this, SearchByName.class);
         startActivity(intent);
