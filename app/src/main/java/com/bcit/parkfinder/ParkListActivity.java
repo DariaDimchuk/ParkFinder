@@ -69,6 +69,8 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         protected Void doInBackground(Void... arg0)
         {
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
+
+            String baseSQL = "SELECT * FROM PARK";
             try {
                 db = helper.getReadableDatabase();
 
@@ -81,26 +83,11 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
 
-                String query = "SELECT DISTINCT P.PARK_ID, " +
-                        "NAME, " +
-                        "LATITUDE, " +
-                        "LONGITUDE, " +
-                        "WASHROOM, " +
-                        "NEIGHBORHOOD_NAME, " +
-                        "NEIGHBORHOOD_URL, " +
-                        "STREET_NUMBER, " +
-                        "STREET_NAME, " +
-                        "FACILITY, " +
-                        "FEATURE " +
-                        "FROM PARK P " +
-                        "LEFT JOIN PARK_FACILITY PF ON PF.PARK_ID = P.PARK_ID " +
-                        "LEFT JOIN PARK_FEATURE PFF ON PFF.PARK_ID = P.PARK_ID " +
-                        "GROUP BY P.PARK_ID "; //tODO this is wrong!!!! need to combine facilities/features
-
-                Cursor cursor = db.rawQuery(query + whereSQL + " ORDER BY NAME", null);
+                Cursor cursor = db.rawQuery(baseSQL + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {
+                        // Creating Park Object
                         int id = cursor.getInt(0);
                         String name = cursor.getString(1);
                         double latitude = cursor.getDouble(2);
@@ -110,11 +97,33 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                         String neighbourhoodURL = cursor.getString(6);
                         String stNumber = cursor.getString(7);
                         String stName = cursor.getString(8);
-                        String facility = cursor.getString(9);
-                        String feature = cursor.getString(10);
-
                         Park park = new Park(id, name, latitude, longitude, washroom, neighbourhoodName,
-                                neighbourhoodURL, stNumber, stName, facility, feature);
+                                neighbourhoodURL, stNumber, stName);
+
+                        // Adding Features
+                        Cursor featureCursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + id, null);
+                        int numFeatures = featureCursor.getCount();
+                        if (featureCursor.moveToFirst()) {
+                            String[] features = new String[numFeatures];
+                            for (int i = 0; i < numFeatures; i++) {
+                                features[i] = featureCursor.getString(0);
+                                featureCursor.moveToNext();
+                            }
+                            park.setFeature(features);
+                        }
+
+                        // Adding Facility
+                        Cursor facilityCursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + id, null);
+                        int numFacilities = facilityCursor.getCount();
+                        if (facilityCursor.moveToFirst()) {
+                            String[] facilities = new String[numFacilities];
+                            for (int i = 0; i < numFacilities; i++) {
+                                facilities[i] = facilityCursor.getString(0);
+                                facilityCursor.moveToNext();
+                            }
+                            park.setFacility(facilities);
+                        }
+
                         parkList.add(park);
                     } while (cursor.moveToNext());
                 }

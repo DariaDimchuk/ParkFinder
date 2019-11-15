@@ -53,19 +53,19 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         washroomView.append(" " + park.getWashroom());
 
         TextView facilityView = findViewById(R.id.tvFacility);
-        if(park.getFacility() == null || park.getFacility().isEmpty()){
+        if(park.getFacility() == null){
             facilityView.append(" none");
         } else {
-            facilityView.append(" " + park.getFacility());
+            facilityView.append(arrayToString(park.getFacility()));
         }
 
 
 
         TextView featuresView = findViewById(R.id.tvFeatures);
-        if(park.getFeature() == null || park.getFeature().isEmpty()){
+        if(park.getFeature() == null){
             featuresView.append(" none");
         } else {
-            featuresView.append(park.getFeature());
+            featuresView.append(arrayToString(park.getFeature()));
         }
 
 //        MapFragment mapFragment = MapFragment.newInstance();
@@ -84,6 +84,14 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
+    }
+
+    public String arrayToString(String[] array) {
+        String str = "";
+        for (int i = 0; i < array.length; i++) {
+            str += array[i] + "\n";
+        }
+        return str;
     }
 
     @Override

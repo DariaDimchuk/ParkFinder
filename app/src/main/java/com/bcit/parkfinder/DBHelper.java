@@ -102,20 +102,12 @@ public class DBHelper extends SQLiteOpenHelper {
                             // Second Json Data - Park Facilities (Table: PARK_FACILITY)
                             } else if (dataN == 1) {
                                 String facility = p.getString("facilitytype");
-                                Park park = new Park();
-                                park.setParkId(parkId);
-                                park.setFacility(facility);
-
-                                insertParkFacility(db, park);
+                                insertParkFacility(db, parkId, facility);
 
                             // Third Json Data - Park Feature (Table: PARK_FEATURE)
                             } else {
                                 String feature = p.getString("specialfeature");
-                                Park park = new Park();
-                                park.setParkId(parkId);
-                                park.setFeature(feature);
-
-                                insertParkFeature(db, park);
+                                insertParkFeature(db, parkId, feature);
                             }
                         }
                     } catch (final JSONException e) {
@@ -182,10 +174,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-    private void insertParkFacility(SQLiteDatabase db, Park park) {
+    private void insertParkFacility(SQLiteDatabase db, int park_id, String facility) {
         ContentValues values = new ContentValues();
-        values.put("PARK_ID", park.getParkId());
-        values.put("FACILITY", park.getFacility());
+        values.put("PARK_ID", park_id);
+        values.put("FACILITY", facility);
 
         db.insert("PARK_FACILITY", null, values);
     }
@@ -201,10 +193,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-    private void insertParkFeature(SQLiteDatabase db, Park park) {
+    private void insertParkFeature(SQLiteDatabase db, int park_id, String feature) {
         ContentValues values = new ContentValues();
-        values.put("PARK_ID", park.getParkId());
-        values.put("FEATURE", park.getFeature());
+        values.put("PARK_ID", park_id);
+        values.put("FEATURE", feature);
 
         db.insert("PARK_FEATURE", null, values);
     }

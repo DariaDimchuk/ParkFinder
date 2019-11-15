@@ -15,8 +15,8 @@ public class Park implements Serializable
     private String streetNumber;
     private String streetName;
 
-    private String facility;
-    private String feature;
+    private String[] facility;
+    private String[] feature;
 
     public Park() {}
 
@@ -49,7 +49,7 @@ public class Park implements Serializable
      */
     public Park(int parkId, String name, double latitude, double longitude, String washroom,
                 String neighName, String neighURL, String streetNumber, String streetName,
-                String facility, String feature) {
+                String[] facility, String[] feature) {
         this.parkId = parkId;
         this.name = name;
         this.latitude = latitude;
@@ -119,19 +119,19 @@ public class Park implements Serializable
         return this.streetName;
     }
 
-    public String getFacility() {
+    public String[] getFacility() {
         return facility;
     }
 
-    public void setFacility(String facility) {
+    public void setFacility(String[] facility) {
         this.facility = facility;
     }
 
-    public String getFeature() {
+    public String[] getFeature() {
         return feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(String[] feature) {
         this.feature = feature;
     }
 
