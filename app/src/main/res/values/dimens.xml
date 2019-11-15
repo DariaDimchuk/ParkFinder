@@ -8,10 +8,10 @@
 
 
     
-    <dimen name="parkTitleSize">40dp</dimen>
+    <dimen name="parkTitleSize">30dp</dimen>
     <dimen name="favouritesBtnTxtSize">15dp</dimen>
 
-    <dimen name="detailsSmallTxtSize">18dp</dimen>
-    <dimen name="detailsTxtSize">22dp</dimen>
+    <dimen name="detailsTxtSize">18dp</dimen>
+    <dimen name="addressToFeaturesDistance">54dp</dimen>
 
 </resources>

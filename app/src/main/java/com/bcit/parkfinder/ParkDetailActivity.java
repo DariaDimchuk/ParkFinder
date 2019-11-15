@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,40 +59,24 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         TextView nameView = findViewById(R.id.tvDetailName);
         nameView.setText(park.getName());
 
-        // Park coordinates
-        TextView coordinatesView = findViewById(R.id.tvCoordinates);
-        coordinatesView.setText(park.getLatitude() + ", " + park.getLongitude());
-
         TextView addressView = findViewById(R.id.tvAddress);
-        addressView.append(" " + park.getStreetNumber() + " " + park.getStreetName());
-
-        TextView neighbourhoodView = findViewById(R.id.tvNeighbourhoodName);
-        neighbourhoodView.append(" " + park.getNeighbourhoodName());
+        addressView.append(park.getStreetNumber() + " " + park.getStreetName());
 
         TextView neighbourhoodURLView = findViewById(R.id.tvNeighbourhoodURL);
-        neighbourhoodURLView.setText(park.getNeighbourhoodurl());
-
+        String url = "<a href=\"" + park.getNeighbourhoodurl() + "\">" + park.getNeighbourhoodName() +"</a>";
+        neighbourhoodURLView.setText(Html.fromHtml(url));
+        neighbourhoodURLView.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView washroomView = findViewById(R.id.tvWashroom);
-        washroomView.append(" " + park.getWashroom());
+        washroomView.append(park.getWashroomFormattedString());
 
-        TextView facilityView = findViewById(R.id.tvFacility);
-        if(park.getFacility() == null || park.getFacility().length == 0){
-            facilityView.setVisibility(View.GONE);
+        TextView featuresFacilitiesView = findViewById(R.id.tvFeatures);
+        String data[] = park.getCombinedFeaturesFacilities();
+        if(data == null || data.length == 0){
+            featuresFacilitiesView.append("No features or facilities found");
         } else {
-            facilityView.append("\n\n - " + TextUtils.join("\n - ", park.getFacility()));
+            featuresFacilitiesView.append(TextUtils.join("\n", data));
         }
-
-
-
-        TextView featuresView = findViewById(R.id.tvFeatures);
-        if(park.getFeature() == null || park.getFeature().length == 0){
-            featuresView.setVisibility(View.GONE);
-        } else {
-            featuresView.append("\n\n - " + TextUtils.join("\n - ", park.getFeature()));
-        }
-
-        //featuresView.append("\n\n"); //creates space at bottom of view
 
     }
     
