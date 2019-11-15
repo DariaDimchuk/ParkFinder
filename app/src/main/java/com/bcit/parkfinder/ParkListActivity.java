@@ -143,7 +143,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                         // Add isFavourite
                         Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + id, null);
                         if (favCursor.getCount() > 0) {
-                            park.setFavourite();
+                            park.setFavourite(true);
                         }
 
                         parkList.add(park);
