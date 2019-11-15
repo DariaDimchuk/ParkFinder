@@ -212,11 +212,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-    // For testing purpose -- To be deleted later
-    private void insertFavPark(SQLiteDatabase db, int parkId) {
+
+    public void insertFavPark(SQLiteDatabase db, int parkId) {
         ContentValues values = new ContentValues();
         values.put("PARK_ID", parkId);
         db.insert("FAV_PARK", null, values);
+    }
+
+    public void removeFavPark(SQLiteDatabase db, int parkId) {
+        ContentValues values = new ContentValues();
+        values.put("DELETED", 1);
+        db.update("FAV_PARK", values, "PARK_ID=" + parkId, null);
     }
 
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {

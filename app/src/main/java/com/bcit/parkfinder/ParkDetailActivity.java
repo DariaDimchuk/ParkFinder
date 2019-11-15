@@ -37,13 +37,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         park = (Park)b.getSerializable("park");
 
         fillTextViews();
-
-//        MapFragment mapFragment = MapFragment.newInstance();
-//        android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
-//        trans.add(R.id.parkDetail, mapFragment);
-//        trans.commit();
-//        mapFragment.getMapAsync(this);
-
+        updateFavouriteButtonIconAndText();
 
         Button favoritesButton = findViewById(R.id.btnFavorite);
         favoritesButton.setOnClickListener(new View.OnClickListener() {
@@ -124,47 +118,21 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap map) {
-//        map.addMarker(new MarkerOptions()
-//                .position(new LatLng(0, 0))
-//                .title("Marker"));
-//    }
-
-
     protected void updateFavouritedStatus(){
+        SQLiteOpenHelper helper = new DBHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DBHelper dbHelper = new DBHelper(this);
+
         if(park.isFavourite()){
             //remove from list
             System.out.println("REMOVING FROM LIST"); //TODO change to update db
             park.setFavourite(false);
-
-
-//            try {
-//                SQLiteOpenHelper helper = new DBHelper(this);
-//                db = helper.getWritableDatabase();
-//
-//                String query = "SELECT * FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + park.getParkId();
-//                Cursor favouriteCursor = db.rawQuery(query, null);
-//
-//                if(favouriteCursor.moveToFirst()){
-//                    park.setFavourite(true);
-//                } else {
-//                    park.setFavourite(false);
-//                }
-//
-//                updateFavouriteButtonIconAndText();
-//
-//                db.close();
-//            } catch (SQLiteException sqle) {
-//                System.out.println(sqle+"");
-//            }
-
-
-
+            dbHelper.removeFavPark(db, park.getParkId());
         } else{
             //adding to list
             System.out.println("ADDING TO LIST"); //TODO change to update db
             park.setFavourite(true);
+            dbHelper.insertFavPark(db, park.getParkId());
         }
 
         updateFavouriteButtonIconAndText();
