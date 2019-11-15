@@ -33,7 +33,9 @@
 
         <ImageButton
             android:id="@+id/btnInfoDetails"
-            android:background="@drawable/info_icon"
+            android:background="@drawable/info"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
             android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
             android:layout_column="3"

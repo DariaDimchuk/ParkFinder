@@ -80,7 +80,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 else if (mode.equals("favourite"))
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
-                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE, STREET_NUMBER, STREET_NAME FROM PARK" + whereSQL + " ORDER BY NAME", null);
+                Cursor cursor = db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE, STREET_NUMBER, STREET_NAME FROM PARK" + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {
