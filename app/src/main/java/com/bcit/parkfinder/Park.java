@@ -33,14 +33,36 @@ public class Park implements Serializable
         this.streetName = streetName;
     }
 
-    public Park(int parkId, String name, double latitude, double longitude, String streetNumber, String streetName) {
+    /**
+     * Creates a new park object
+     * @param parkId
+     * @param name - park name
+     * @param latitude
+     * @param longitude
+     * @param washroom - Y or N for if there is an available washroom
+     * @param neighName - neighbourhood name
+     * @param neighURL - URL to neighbourhood news / details
+     * @param streetNumber - part of address
+     * @param streetName - part of address
+     * @param facility - description of facilities. May be null.
+     * @param feature - description of features. May be null.
+     */
+    public Park(int parkId, String name, double latitude, double longitude, String washroom,
+                String neighName, String neighURL, String streetNumber, String streetName,
+                String facility, String feature) {
         this.parkId = parkId;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.washroom = washroom;
+        this.neighbourhoodName = neighName;
+        this.neighbourhoodurl = neighURL;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
+        this.facility = facility;
+        this.feature = feature;
     }
+
 
     public void setParkId(int parkId){
         this.parkId = parkId;

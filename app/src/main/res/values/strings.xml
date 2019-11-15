@@ -13,4 +13,10 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="btnFavourite">Add to favourites</string>
+    <string name="addressTxt">Address: </string>
+    <string name="washroomTxt">Washroom: </string>
+    <string name="facilitiesTxt">Facilities: </string>
+    <string name="featuresTxt">Features: </string>
+    <string name="neighbourhoodNameTxt">Neighbourhood: </string>
+
 </resources>

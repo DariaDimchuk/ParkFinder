@@ -80,7 +80,24 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 else if (mode.equals("favourite"))
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
-                Cursor cursor = db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE, STREET_NUMBER, STREET_NAME FROM PARK" + whereSQL + " ORDER BY NAME", null);
+
+                String query = "SELECT DISTINCT P.PARK_ID, " +
+                        "NAME, " +
+                        "LATITUDE, " +
+                        "LONGITUDE, " +
+                        "WASHROOM, " +
+                        "NEIGHBORHOOD_NAME, " +
+                        "NEIGHBORHOOD_URL, " +
+                        "STREET_NUMBER, " +
+                        "STREET_NAME, " +
+                        "FACILITY, " +
+                        "FEATURE " +
+                        "FROM PARK P " +
+                        "LEFT JOIN PARK_FACILITY PF ON PF.PARK_ID = P.PARK_ID " +
+                        "LEFT JOIN PARK_FEATURE PFF ON PFF.PARK_ID = P.PARK_ID " +
+                        "GROUP BY P.PARK_ID "; //tODO this is wrong!!!! need to combine facilities/features
+
+                Cursor cursor = db.rawQuery(query + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {
@@ -88,10 +105,16 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                         String name = cursor.getString(1);
                         double latitude = cursor.getDouble(2);
                         double longitude = cursor.getDouble(3);
-                        String stNumber = cursor.getString(4);
-                        String stName = cursor.getString(5);
+                        String washroom = cursor.getString(4);
+                        String neighbourhoodName = cursor.getString(5);
+                        String neighbourhoodURL = cursor.getString(6);
+                        String stNumber = cursor.getString(7);
+                        String stName = cursor.getString(8);
+                        String facility = cursor.getString(9);
+                        String feature = cursor.getString(10);
 
-                        Park park = new Park(id, name, latitude, longitude, stNumber, stName);
+                        Park park = new Park(id, name, latitude, longitude, washroom, neighbourhoodName,
+                                neighbourhoodURL, stNumber, stName, facility, feature);
                         parkList.add(park);
                     } while (cursor.moveToNext());
                 }
