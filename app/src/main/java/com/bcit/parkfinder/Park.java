@@ -18,6 +18,8 @@ public class Park implements Serializable
     private String[] facility;
     private String[] feature;
 
+    private boolean isFavourite = false;
+
     public Park() {}
 
     public Park(int parkId, String name, double latitude, double longitude, String washroom,
@@ -133,6 +135,14 @@ public class Park implements Serializable
 
     public void setFeature(String[] feature) {
         this.feature = feature;
+    }
+
+    public boolean getFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite() {
+        this.isFavourite = true;
     }
 
     public String toString() {
