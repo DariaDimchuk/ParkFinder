@@ -46,7 +46,7 @@
         android:paddingLeft="@dimen/padding10"
         android:paddingRight="@dimen/padding10"
         android:scaleType="centerInside"
-        android:text="@string/btnFavourite"
+        android:text="@string/addFavourite"
         android:textSize="@dimen/favouritesBtnTxtSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

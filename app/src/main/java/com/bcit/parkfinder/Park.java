@@ -137,12 +137,12 @@ public class Park implements Serializable
         this.feature = feature;
     }
 
-    public boolean getFavourite() {
+    public boolean isFavourite() {
         return isFavourite;
     }
 
-    public void setFavourite() {
-        this.isFavourite = true;
+    public void setFavourite(boolean f) {
+        this.isFavourite = f;
     }
 
     public String toString() {
