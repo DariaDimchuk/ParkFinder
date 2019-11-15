@@ -96,7 +96,7 @@ public class Park implements Serializable
     }
 
     public String getWashroomFormattedString(){
-        if(this.washroom.toUpperCase() == "Y"){
+        if(this.washroom.equalsIgnoreCase("Y")){
             return "Washroom available";
         } else{
             return "No washroom available";
