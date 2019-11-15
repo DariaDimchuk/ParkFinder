@@ -12,11 +12,13 @@
     <string name="parkName">Enter the park name to search</string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="btnFavourite">Add to favourites</string>
-    <string name="addressTxt">Address: </string>
-    <string name="washroomTxt">Washroom: </string>
-    <string name="facilitiesTxt">Facilities: </string>
-    <string name="featuresTxt">Features: </string>
-    <string name="neighbourhoodNameTxt">Neighbourhood: </string>
+    <string name="addFavourite">Add to favourites</string>
+    <string name="removeFavourite">Remove from favourites</string>
+
+    <string name="addressTxt"><b>Address:</b> </string>
+    <string name="washroomTxt"><b>Washroom:</b> </string>
+    <string name="facilitiesTxt"><b>Facilities:</b> </string>
+    <string name="featuresTxt"><b>Features:</b> </string>
+    <string name="neighbourhoodNameTxt"><b>Neighbourhood:</b> </string>
 
 </resources>

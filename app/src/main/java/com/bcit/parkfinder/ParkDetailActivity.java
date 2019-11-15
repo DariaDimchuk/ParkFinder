@@ -2,11 +2,16 @@ package com.bcit.parkfinder;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,12 +19,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.w3c.dom.Text;
-
 public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Park park;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,28 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         Bundle b = intent.getBundleExtra("bundle");
         park = (Park)b.getSerializable("park");
 
+        fillTextViews();
+
+//        MapFragment mapFragment = MapFragment.newInstance();
+//        android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
+//        trans.add(R.id.parkDetail, mapFragment);
+//        trans.commit();
+//        mapFragment.getMapAsync(this);
+
+
+        Button favoritesButton = findViewById(R.id.btnFavorite);
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateFavouritedStatus();
+            }
+        });
+
+
+    }
+
+
+    protected void fillTextViews(){
         // Park name
         TextView nameView = findViewById(R.id.tvDetailName);
         nameView.setText(park.getName());
@@ -54,48 +80,39 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         washroomView.append(" " + park.getWashroom());
 
         TextView facilityView = findViewById(R.id.tvFacility);
-        if(park.getFacility() == null){
-            facilityView.append(" none");
+        if(park.getFacility() == null || park.getFacility().length == 0){
+            facilityView.setVisibility(View.GONE);
         } else {
-            facilityView.append(arrayToString(park.getFacility()));
+            facilityView.append("\n\n - " + TextUtils.join("\n - ", park.getFacility()));
         }
 
 
 
         TextView featuresView = findViewById(R.id.tvFeatures);
-        if(park.getFeature() == null){
-            featuresView.append(" none");
+        if(park.getFeature() == null || park.getFeature().length == 0){
+            featuresView.setVisibility(View.GONE);
         } else {
-            featuresView.append(arrayToString(park.getFeature()));
+            featuresView.append("\n\n - " + TextUtils.join("\n - ", park.getFeature()));
         }
 
-//        MapFragment mapFragment = MapFragment.newInstance();
-//        android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
-//        trans.add(R.id.parkDetail, mapFragment);
-//        trans.commit();
-//        mapFragment.getMapAsync(this);
+        //featuresView.append("\n\n"); //creates space at bottom of view
 
+    }
+    
+    
+    protected void updateFavouriteButtonIconAndText(){
+        Button favouriteButton = findViewById(R.id.btnFavorite);
 
-        Button favoritesButton = findViewById(R.id.btnFavorite);
-        favoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast t = Toast.makeText(ParkDetailActivity.this, park.getFavourite() + "", Toast.LENGTH_LONG);
-                t.show();
-
-            }
-        });
-
+        if(park.isFavourite()){
+            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.star, 0, 0, 0);
+            favouriteButton.setText(R.string.removeFavourite);
+        } else {
+            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty_star, 0, 0, 0);
+            favouriteButton.setText(R.string.addFavourite);
+        }
 
     }
 
-    public String arrayToString(String[] array) {
-        String str = "";
-        for (int i = 0; i < array.length; i++) {
-            str += array[i] + "\n";
-        }
-        return str;
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -114,5 +131,43 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 //                .title("Marker"));
 //    }
 
+
+    protected void updateFavouritedStatus(){
+        if(park.isFavourite()){
+            //remove from list
+            System.out.println("REMOVING FROM LIST"); //TODO change to update db
+            park.setFavourite(false);
+
+
+//            try {
+//                SQLiteOpenHelper helper = new DBHelper(this);
+//                db = helper.getWritableDatabase();
+//
+//                String query = "SELECT * FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + park.getParkId();
+//                Cursor favouriteCursor = db.rawQuery(query, null);
+//
+//                if(favouriteCursor.moveToFirst()){
+//                    park.setFavourite(true);
+//                } else {
+//                    park.setFavourite(false);
+//                }
+//
+//                updateFavouriteButtonIconAndText();
+//
+//                db.close();
+//            } catch (SQLiteException sqle) {
+//                System.out.println(sqle+"");
+//            }
+
+
+
+        } else{
+            //adding to list
+            System.out.println("ADDING TO LIST"); //TODO change to update db
+            park.setFavourite(true);
+        }
+
+        updateFavouriteButtonIconAndText();
+    }
 
 }
