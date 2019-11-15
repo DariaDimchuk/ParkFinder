@@ -75,19 +75,10 @@ public class SearchByFeature extends AppCompatActivity {
             SQLiteDatabase db;
             try {
                 db = helper.getReadableDatabase();
-                Cursor cursor= db.rawQuery("SELECT DISTINCT FEATURE from PARK_FEATURE ORDER BY FEATURE", null);
+                Cursor cursor= db.rawQuery("SELECT DISTINCT FEATURE AS NAME from PARK_FEATURE " +
+                        "UNION SELECT DISTINCT FACILITY AS NAME from PARK_FACILITY ORDER BY NAME", null);
 
                 featureList = new ArrayList<Feature>();
-
-                if (cursor.moveToFirst()) {
-                    do {
-                        Feature feature = new Feature(cursor.getString(0));
-                        featureList.add(feature);
-
-                    } while (cursor.moveToNext());
-                }
-
-                cursor = db.rawQuery("SELECT DISTINCT FACILITY from PARK_FACILITY ORDER BY FACILITY", null);
 
                 if (cursor.moveToFirst()) {
                     do {
