@@ -3,25 +3,22 @@ package com.bcit.parkfinder;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
 
 public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String name;
-    private double latitude;
-    private double longitude;
+    private Park park;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +28,61 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         Intent intent = getIntent();
 
         // Retrieve the park info
-        name = intent.getStringExtra("name");
-        latitude = intent.getDoubleExtra("latitude", 49.2495);  //default: bcit campus
-        longitude = intent.getDoubleExtra("longitude", 123.0008);
-
+        Bundle b = intent.getBundleExtra("bundle");
+        park = (Park)b.getSerializable("park");
 
         // Park name
         TextView nameView = findViewById(R.id.tvDetailName);
-        nameView.setText(name);
+        nameView.setText(park.getName());
 
         // Park coordinates
         TextView coordinatesView = findViewById(R.id.tvCoordinates);
-        coordinatesView.setText(latitude + ", " + longitude);
+        coordinatesView.setText(park.getLatitude() + ", " + park.getLongitude());
 
-        MapFragment mapFragment = MapFragment.newInstance();
-        android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.add(R.id.parkDetail, mapFragment);
-        trans.commit();
-        mapFragment.getMapAsync(this);
+        TextView addressView = findViewById(R.id.tvAddress);
+        addressView.append(" " + park.getStreetNumber() + " " + park.getStreetName());
+
+        TextView neighbourhoodView = findViewById(R.id.tvNeighbourhoodName);
+        neighbourhoodView.append(" " + park.getNeighbourhoodName());
+
+        TextView neighbourhoodURLView = findViewById(R.id.tvNeighbourhoodURL);
+        neighbourhoodURLView.setText(park.getNeighbourhoodurl());
+
+
+        TextView washroomView = findViewById(R.id.tvWashroom);
+        washroomView.append(" " + park.getWashroom());
+
+        TextView facilityView = findViewById(R.id.tvFacility);
+        if(park.getFacility() == null || park.getFacility().isEmpty()){
+            facilityView.append(" none");
+        } else {
+            facilityView.append(" " + park.getFacility());
+        }
+
+
+
+        TextView featuresView = findViewById(R.id.tvFeatures);
+        if(park.getFeature() == null || park.getFeature().isEmpty()){
+            featuresView.append(" none");
+        } else {
+            featuresView.append(park.getFeature());
+        }
+
+//        MapFragment mapFragment = MapFragment.newInstance();
+//        android.app.FragmentTransaction trans = getFragmentManager().beginTransaction();
+//        trans.add(R.id.parkDetail, mapFragment);
+//        trans.commit();
+//        mapFragment.getMapAsync(this);
+
+
+        Button favoritesButton = findViewById(R.id.btnFavorite);
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
     }
 
@@ -57,8 +91,8 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker for park and move the camera
-        LatLng parkLocation = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(parkLocation).title(name));
+        LatLng parkLocation = new LatLng(park.getLatitude(), park.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(parkLocation).title(park.getName()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
@@ -68,5 +102,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 //                .position(new LatLng(0, 0))
 //                .title("Marker"));
 //    }
+
 
 }

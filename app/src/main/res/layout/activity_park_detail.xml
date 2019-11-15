@@ -7,29 +7,136 @@
     tools:context=".MainActivity"
     android:id="@+id/parkDetail">
 
+
     <TextView
         android:id="@+id/tvDetailName"
         android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/BasicBlack"
-        android:textSize="20dp"
+        android:textSize="@dimen/parkTitleSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.059" />
 
     <TextView
         android:id="@+id/tvCoordinates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/detailsSmallTxtSize"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDetailName" />
-<!--    -->
+
+    <Button
+        android:id="@+id/btnFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_column="3"
+        android:adjustViewBounds="true"
+        android:background="@android:drawable/screen_background_light"
+        android:drawableLeft="@drawable/empty_star"
+        android:drawablePadding="@dimen/padding5"
+        android:paddingLeft="@dimen/padding10"
+        android:paddingRight="@dimen/padding10"
+        android:scaleType="centerInside"
+        android:text="@string/btnFavourite"
+        android:textSize="@dimen/favouritesBtnTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCoordinates"
+        app:layout_constraintVertical_bias="0.034">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addressTxt"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnFavorite"
+        app:layout_constraintVertical_bias="0.102" />
+
+    <TextView
+        android:id="@+id/tvNeighbourhoodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/neighbourhoodNameTxt"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvAddress"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddress"
+        app:layout_constraintVertical_bias="0.056" />
+
+
+    <TextView
+        android:id="@+id/tvNeighbourhoodURL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/padding10"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodName"
+        app:layout_constraintTop_toBottomOf="@+id/tvNeighbourhoodName"
+        android:autoLink="web"
+        app:layout_constraintVertical_bias="0.056" />
+
+    <TextView
+        android:id="@+id/tvFacility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/facilitiesTxt"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodURL"
+        app:layout_constraintTop_toBottomOf="@+id/tvNeighbourhoodURL"
+        app:layout_constraintVertical_bias="0.188" />
+
+    <TextView
+        android:id="@+id/tvWashroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/washroomTxt"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvFeatures"
+        app:layout_constraintTop_toBottomOf="@+id/tvFeatures"
+        app:layout_constraintVertical_bias="0.127" />
+
+    <TextView
+        android:id="@+id/tvFeatures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/featuresTxt"
+        android:textSize="@dimen/detailsTxtSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.007"
+        app:layout_constraintStart_toStartOf="@+id/tvFacility"
+        app:layout_constraintTop_toBottomOf="@+id/tvFacility"
+        app:layout_constraintVertical_bias="0.104" />
+    <!--    -->
 <!--    <fragment-->
 <!--        class="com.google.android.gms.maps.MapFragment"-->
 <!--        android:layout_width="match_parent"-->
