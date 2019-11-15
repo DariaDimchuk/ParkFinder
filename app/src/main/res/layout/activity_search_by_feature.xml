@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".SearchByFeature">
 
-
-    <EditText
+    <TextView
         android:id="@+id/etSearchByLocation"
         android:layout_width="337dp"
         android:layout_height="70dp"
@@ -22,28 +21,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Spinner
-        android:id="@+id/spFeature"
-        android:layout_width="312dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="250dp"
+    <ListView
+        android:id="@+id/lvFeatureList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.261" />
-
-    <Spinner
-        android:id="@+id/spFacility"
-        android:layout_width="312dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="250dp"
-        app:layout_constraintBottom_toBottomOf="@id/spFeature"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSearch"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -51,11 +37,10 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="@dimen/widthSearchBtn"
         android:layout_height="@dimen/heightSearchBtn"
-        android:layout_marginTop="124dp"
         android:text="@string/btnSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spFeature" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearchByLocation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
