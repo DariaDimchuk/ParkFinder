@@ -81,21 +81,21 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         TextView facilityView = findViewById(R.id.tvFacility);
         if(park.getFacility() == null || park.getFacility().length == 0){
-            facilityView.append(" none");
+            facilityView.setVisibility(View.GONE);
         } else {
-            facilityView.append("\n\n" + TextUtils.join("\n", park.getFacility()));
+            facilityView.append("\n\n - " + TextUtils.join("\n - ", park.getFacility()));
         }
 
 
 
         TextView featuresView = findViewById(R.id.tvFeatures);
         if(park.getFeature() == null || park.getFeature().length == 0){
-            featuresView.append(" none");
+            featuresView.setVisibility(View.GONE);
         } else {
-            featuresView.append("\n\n" + TextUtils.join("\n", park.getFeature()));
+            featuresView.append("\n\n - " + TextUtils.join("\n - ", park.getFeature()));
         }
 
-        featuresView.append("\n\n"); //creates space at bottom of view
+        //featuresView.append("\n\n"); //creates space at bottom of view
 
     }
     
