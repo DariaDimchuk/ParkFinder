@@ -1,7 +1,9 @@
 package com.bcit.parkfinder;
 
 
-public class Park
+import java.io.Serializable;
+
+public class Park implements Serializable
 {
     private int parkId;
     private String name;
@@ -13,8 +15,10 @@ public class Park
     private String streetNumber;
     private String streetName;
 
-    private String facility;
-    private String feature;
+    private String[] facility;
+    private String[] feature;
+
+    private boolean isFavourite = false;
 
     public Park() {}
 
@@ -31,14 +35,36 @@ public class Park
         this.streetName = streetName;
     }
 
-    public Park(int parkId, String name, double latitude, double longitude, String streetNumber, String streetName) {
+    /**
+     * Creates a new park object
+     * @param parkId
+     * @param name - park name
+     * @param latitude
+     * @param longitude
+     * @param washroom - Y or N for if there is an available washroom
+     * @param neighName - neighbourhood name
+     * @param neighURL - URL to neighbourhood news / details
+     * @param streetNumber - part of address
+     * @param streetName - part of address
+     * @param facility - description of facilities. May be null.
+     * @param feature - description of features. May be null.
+     */
+    public Park(int parkId, String name, double latitude, double longitude, String washroom,
+                String neighName, String neighURL, String streetNumber, String streetName,
+                String[] facility, String[] feature) {
         this.parkId = parkId;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.washroom = washroom;
+        this.neighbourhoodName = neighName;
+        this.neighbourhoodurl = neighURL;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
+        this.facility = facility;
+        this.feature = feature;
     }
+
 
     public void setParkId(int parkId){
         this.parkId = parkId;
@@ -95,20 +121,28 @@ public class Park
         return this.streetName;
     }
 
-    public String getFacility() {
+    public String[] getFacility() {
         return facility;
     }
 
-    public void setFacility(String facility) {
+    public void setFacility(String[] facility) {
         this.facility = facility;
     }
 
-    public String getFeature() {
+    public String[] getFeature() {
         return feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(String[] feature) {
         this.feature = feature;
+    }
+
+    public boolean getFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite() {
+        this.isFavourite = true;
     }
 
     public String toString() {

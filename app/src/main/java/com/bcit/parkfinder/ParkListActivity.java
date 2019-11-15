@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -74,6 +74,8 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         protected Void doInBackground(Void... arg0)
         {
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
+
+            String baseSQL = "SELECT * FROM PARK";
             try {
                 db = helper.getReadableDatabase();
 
@@ -85,18 +87,54 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 else if (mode.equals("favourite"))
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
-                Cursor cursor= db.rawQuery("SELECT PARK_ID, NAME, LATITUDE, LONGITUDE, STREET_NUMBER, STREET_NAME FROM PARK" + whereSQL + " ORDER BY NAME", null);
+
+                Cursor cursor = db.rawQuery(baseSQL + whereSQL + " ORDER BY NAME", null);
 
                 if (cursor.moveToFirst()) {
                     do {
+                        // Creating Park Object
                         int id = cursor.getInt(0);
                         String name = cursor.getString(1);
                         double latitude = cursor.getDouble(2);
                         double longitude = cursor.getDouble(3);
-                        String stNumber = cursor.getString(4);
-                        String stName = cursor.getString(5);
+                        String washroom = cursor.getString(4);
+                        String neighbourhoodName = cursor.getString(5);
+                        String neighbourhoodURL = cursor.getString(6);
+                        String stNumber = cursor.getString(7);
+                        String stName = cursor.getString(8);
+                        Park park = new Park(id, name, latitude, longitude, washroom, neighbourhoodName,
+                                neighbourhoodURL, stNumber, stName);
 
-                        Park park = new Park(id, name, latitude, longitude, stNumber, stName);
+                        // Adding Features
+                        Cursor featureCursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + id, null);
+                        int numFeatures = featureCursor.getCount();
+                        if (featureCursor.moveToFirst()) {
+                            String[] features = new String[numFeatures];
+                            for (int i = 0; i < numFeatures; i++) {
+                                features[i] = featureCursor.getString(0);
+                                featureCursor.moveToNext();
+                            }
+                            park.setFeature(features);
+                        }
+
+                        // Adding Facility
+                        Cursor facilityCursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + id, null);
+                        int numFacilities = facilityCursor.getCount();
+                        if (facilityCursor.moveToFirst()) {
+                            String[] facilities = new String[numFacilities];
+                            for (int i = 0; i < numFacilities; i++) {
+                                facilities[i] = facilityCursor.getString(0);
+                                facilityCursor.moveToNext();
+                            }
+                            park.setFacility(facilities);
+                        }
+
+                        // Add isFavourite
+                        Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + id, null);
+                        if (favCursor.getCount() > 0) {
+                            park.setFavourite();
+                        }
+
                         parkList.add(park);
                     } while (cursor.moveToNext());
                 }
@@ -125,31 +163,17 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     // get park details
                     Park park = parkList.get(position);
                     double latitude = park.getLatitude();
                     double longitude = park.getLongitude();
+                    String parkName = park.getName();
 
                     // add marker and move camera position to park location
                     LatLng parkLocation = new LatLng(latitude, longitude);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
-                }
-            });
-
-            // move camera position to location of chosen park
-            lvParksList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Intent intent = new Intent(ParkListActivity.this, ParkDetailActivity.class);
-                    Park park = parkList.get(position);
-                    intent.putExtra("id", park.getParkId());
-                    intent.putExtra("name", park.getName());
-                    intent.putExtra("latitude", park.getLatitude());
-                    intent.putExtra("longitude", park.getLongitude());
-                    startActivity(intent);
-
-                    return false;
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 14f));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(parkLocation).title(parkName));
+                    marker.showInfoWindow();
                 }
             });
         }
@@ -179,9 +203,15 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear();
-        // moves camera position of the map over vancouver
-        LatLng vancouver = new LatLng(49.246292, -123.116226);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vancouver, 11.5f));
+
+        // Vancouver by default, if the result is not empty, update it with the first park's position
+        LatLng location = new LatLng(49.246292, -123.116226);
+        if (!parkList.isEmpty()) {
+            Park park = parkList.get(0);
+            location = new LatLng(park.getLatitude(), park.getLongitude());
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f));
     }
 
     @Override

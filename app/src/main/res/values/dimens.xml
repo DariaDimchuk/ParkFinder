@@ -2,5 +2,16 @@
 <resources>
     <dimen name="widthSearchBtn">200dp</dimen>
     <dimen name="heightSearchBtn">50dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
+    <dimen name="padding10">10dp</dimen>
+    <dimen name="padding5">5dp</dimen>
+
+
+
+    
+    <dimen name="parkTitleSize">40dp</dimen>
+    <dimen name="favouritesBtnTxtSize">15dp</dimen>
+
+    <dimen name="detailsSmallTxtSize">18dp</dimen>
+    <dimen name="detailsTxtSize">22dp</dimen>
+
 </resources>
