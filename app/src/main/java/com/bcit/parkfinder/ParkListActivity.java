@@ -47,8 +47,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         mode = intent.getStringExtra("mode") == null ? "" : intent.getStringExtra("mode");
         if (mode.equals("feature") ) {
             features = intent.getStringArrayListExtra("features");
-        }
-        if (mode != null && !mode.isEmpty())
+        } else if (!mode.isEmpty())
             keyword = intent.getStringExtra("keyword");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -76,6 +75,10 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             SQLiteOpenHelper helper = new DBHelper(ParkListActivity.this);
 
             String baseSQL = "SELECT * FROM PARK";
+            String joinSQL = "SELECT * FROM PARK P" +
+                    " LEFT JOIN PARK_FEATURE PF ON PF.PARK_ID = P.PARK_ID" +
+                    " LEFT JOIN PARK_FACILITY PFF ON PFF.PARK_ID = P.PARK_ID";
+
             try {
                 db = helper.getReadableDatabase();
 
@@ -86,6 +89,14 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE NEIGHBORHOOD_NAME = '" + keyword + "'";
                 else if (mode.equals("favourite"))
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
+                else if (mode.equals("feature")) {
+                    baseSQL = joinSQL;
+                    whereSQL = " WHERE (1=1)";
+                    for (int i = 0; i < features.size(); i++) {
+                        whereSQL += " AND (FEATURE = '" + features.get(i) + "' OR " + "FACILITY = '" + features.get(i) + "')";
+                    }
+                    System.out.println(whereSQL);
+                }
 
 
                 Cursor cursor = db.rawQuery(baseSQL + whereSQL + " ORDER BY NAME", null);
