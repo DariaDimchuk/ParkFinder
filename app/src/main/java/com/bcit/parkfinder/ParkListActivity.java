@@ -19,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -162,10 +163,13 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     Park park = parkList.get(position);
                     double latitude = park.getLatitude();
                     double longitude = park.getLongitude();
+                    String parkName = park.getName();
 
                     // add marker and move camera position to park location
                     LatLng parkLocation = new LatLng(latitude, longitude);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 14f));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(parkLocation).title(parkName));
+                    marker.showInfoWindow();
                 }
             });
         }
@@ -195,9 +199,15 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear();
-        // moves camera position of the map over vancouver
-        LatLng vancouver = new LatLng(49.246292, -123.116226);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vancouver, 11.5f));
+
+        // Vancouver by default, if the result is not empty, update it with the first park's position
+        LatLng location = new LatLng(49.246292, -123.116226);
+        if (!parkList.isEmpty()) {
+            Park park = parkList.get(0);
+            location = new LatLng(park.getLatitude(), park.getLongitude());
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f));
     }
 
     @Override
