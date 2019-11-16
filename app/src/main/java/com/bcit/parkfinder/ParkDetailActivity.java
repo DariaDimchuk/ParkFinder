@@ -26,7 +26,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private GoogleMap mMap;
     private Park park;
-    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,14 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         // Retrieve the park info
         Bundle b = intent.getBundleExtra("bundle");
         park = (Park)b.getSerializable("park");
+
+        // Set Facilities, Features, and Favourite information onto the Park object.
+        DBHelper helper = new DBHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        helper.setParkFacilities(db, park);
+        helper.setParkFeatures(db, park);
+        helper.setParkFavourite(db, park);
+
 
         fillTextViews();
         updateFavouriteButtonIconAndText();
@@ -91,7 +98,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
             favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty_star, 0, 0, 0);
             favouriteButton.setText(R.string.addFavourite);
         }
-
     }
 
 
@@ -105,7 +111,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
-    protected void updateFavouritedStatus(){
+    protected void updateFavouritedStatus() {
         DBHelper helper = new DBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -123,5 +129,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         updateFavouriteButtonIconAndText();
     }
+
 
 }

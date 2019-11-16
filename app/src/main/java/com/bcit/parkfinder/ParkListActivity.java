@@ -67,28 +67,10 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         //When BACK BUTTON is pressed, the activity on the stack is restarted
         super.onRestart();
 
-        /*
-            1. When it's a favourite mode, update the park list to reflect the newly added/removed fav park.
-            2. When it's other modes, update a Favourite status of all parks in the park list,
-               so that when they go back to a detail page, it can reflect the updated fav status.
-         */
+        //When it's a favourite mode, update the park list to reflect the newly added/removed fav park.
         if (mode.equals("favourite")) {
             System.out.println("REFRESH THE PARK LIST");
             new GetParksTask().execute();
-        } else {
-            helper = new DBHelper(ParkListActivity.this);
-            db = helper.getReadableDatabase();
-
-            for (Park p : parkList) {
-                int id = p.getParkId();
-                Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + id, null);
-                if (favCursor.getCount() > 0) {
-                    p.setFavourite(true);
-                } else {
-                    p.setFavourite(false);
-                }
-            }
-
         }
     }
 
@@ -108,10 +90,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             helper = new DBHelper(ParkListActivity.this);
 
             String baseSQL = "SELECT DISTINCT * FROM PARK";
-            String joinSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
-                    " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P" +
-                    " LEFT JOIN PARK_FEATURE PF ON PF.PARK_ID = P.PARK_ID" +
-                    " LEFT JOIN PARK_FACILITY PFF ON PFF.PARK_ID = P.PARK_ID";
 
             try {
                 parkList.clear();
@@ -128,19 +106,24 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
                 } else if (mode.equals("feature") && features.size() > 0) {
-                    baseSQL = joinSQL;
+                    baseSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
+                        " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P " +
+                        "LEFT JOIN (SELECT park_id, feature AS feature FROM park_feature UNION " +
+                        "SELECT park_id, facility AS feature FROM park_facility) f ON f.park_id = p.park_id";
+
                     int num = features.size();
                     String conditions = "(";
                     for (int i = 0; i < num; i++) {
                         conditions += "'" + features.get(i) + (i == num - 1 ? "')" : "', ");
                     }
-                    whereSQL = " WHERE facility IN " + conditions + " OR feature IN " + conditions +
+                    whereSQL = " WHERE feature IN " + conditions +
                             " GROUP BY p.park_id " +
-                            " HAVING COUNT(DISTINCT facility) = " + num + " or COUNT(DISTINCT feature) = " + num;
-                    System.out.println(whereSQL);
+                            " HAVING COUNT(DISTINCT feature) = " + num ;
+                    System.out.println(baseSQL + whereSQL);
                 }
 
                 Cursor cursor = db.rawQuery(baseSQL + whereSQL + " ORDER BY NAME", null);
+                System.out.println(baseSQL + whereSQL);
 
                 if (cursor.moveToFirst()) {
                     do {
@@ -156,36 +139,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                         String stName = cursor.getString(8);
                         Park park = new Park(id, name, latitude, longitude, washroom, neighbourhoodName,
                                 neighbourhoodURL, stNumber, stName);
-
-                        // Adding Features
-                        Cursor featureCursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + id, null);
-                        int numFeatures = featureCursor.getCount();
-                        if (featureCursor.moveToFirst()) {
-                            String[] features = new String[numFeatures];
-                            for (int i = 0; i < numFeatures; i++) {
-                                features[i] = featureCursor.getString(0);
-                                featureCursor.moveToNext();
-                            }
-                            park.setFeature(features);
-                        }
-
-                        // Adding Facility
-                        Cursor facilityCursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + id, null);
-                        int numFacilities = facilityCursor.getCount();
-                        if (facilityCursor.moveToFirst()) {
-                            String[] facilities = new String[numFacilities];
-                            for (int i = 0; i < numFacilities; i++) {
-                                facilities[i] = facilityCursor.getString(0);
-                                facilityCursor.moveToNext();
-                            }
-                            park.setFacility(facilities);
-                        }
-
-                        // Add isFavourite
-                        Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + id, null);
-                        if (favCursor.getCount() > 0) {
-                            park.setFavourite(true);
-                        }
 
                         parkList.add(park);
                     } while (cursor.moveToNext());
