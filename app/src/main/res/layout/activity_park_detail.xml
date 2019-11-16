@@ -18,29 +18,17 @@
             android:id="@+id/tvDetailName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
+            android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/BasicBlack"
             android:textSize="@dimen/parkTitleSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvCoordinates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="@dimen/detailsSmallTxtSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDetailName" />
 
         <Button
             android:id="@+id/btnFavorite"
@@ -49,7 +37,7 @@
             android:layout_row="1"
             android:layout_column="3"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:adjustViewBounds="true"
             android:background="@android:drawable/screen_background_light"
@@ -63,78 +51,95 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCoordinates">
+            app:layout_constraintTop_toBottomOf="@+id/tvDetailName">
 
         </Button>
+
+
+        <ImageView
+            android:id="@+id/addressIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnFavorite"
+            app:srcCompat="@drawable/address" />
 
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/addressTxt"
+            android:layout_marginTop="8dp"
             android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFavorite" />
+            app:layout_constraintStart_toEndOf="@+id/addressIcon"
+            app:layout_constraintTop_toTopOf="@+id/addressIcon" />
 
-        <TextView
-            android:id="@+id/tvNeighbourhoodName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/urlIcon"
+            android:layout_width="32dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/neighbourhoodNameTxt"
-            android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="@+id/tvAddress"
-            app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/addressIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddress"
+            app:srcCompat="@drawable/internet" />
 
         <TextView
             android:id="@+id/tvNeighbourhoodURL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:autoLink="web"
+            android:layout_marginTop="4dp"
             android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodName"
-            app:layout_constraintTop_toBottomOf="@+id/tvNeighbourhoodName" />
+            app:layout_constraintStart_toStartOf="@+id/tvAddress"
+            app:layout_constraintTop_toTopOf="@+id/urlIcon" />
 
+
+        <ImageView
+            android:id="@+id/washroomIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/featuresIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvFeatures"
+            app:srcCompat="@drawable/washroom2" />
 
         <TextView
             android:id="@+id/tvWashroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/washroomTxt"
+            android:layout_marginTop="8dp"
             android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodURL"
-            app:layout_constraintTop_toBottomOf="@+id/tvNeighbourhoodURL" />
+            app:layout_constraintStart_toStartOf="@+id/tvFeatures"
+            app:layout_constraintTop_toTopOf="@+id/washroomIcon" />
 
-        <TextView
-            android:id="@+id/tvFacility"
+
+        <ImageView
+            android:id="@+id/featuresIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/facilitiesTxt"
-            android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="@+id/tvWashroom"
-            app:layout_constraintTop_toBottomOf="@+id/tvWashroom" />
+            android:layout_marginTop="@dimen/addressToFeaturesDistance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/addressIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvNeighbourhoodURL"
+            app:srcCompat="@drawable/features" />
 
         <TextView
             android:id="@+id/tvFeatures"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/featuresTxt"
+            android:layout_marginTop="8dp"
             android:textSize="@dimen/detailsTxtSize"
-            app:layout_constraintStart_toStartOf="@+id/tvFacility"
-            app:layout_constraintTop_toBottomOf="@+id/tvFacility" />
+            app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodURL"
+            app:layout_constraintTop_toTopOf="@+id/featuresIcon" />
 
 
 
