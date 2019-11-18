@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,6 +62,31 @@ public class FeatureAdapter extends ArrayAdapter<Feature> {
                 boolean reversed = !checkbox.isChecked();
 
                 checkbox.setChecked(reversed); //triggers onchange checkbox listener
+
+
+                Button clear = ((Activity) _context).findViewById(R.id.btnClear);
+                //if at least one checkbox is on, clear button should be enabled
+                if(reversed == true){
+                    clear.setEnabled(true);
+                } else {
+                    //check - if no checkboxes are on, disable clear button
+
+                    ListView lvFeaturesList = ((Activity) _context).findViewById(R.id.lvFeatureList);
+                    boolean foundOne = false;
+                    for (int i = 0; i < lvFeaturesList.getLastVisiblePosition() - lvFeaturesList.getFirstVisiblePosition(); i++) {
+                        View child = lvFeaturesList.getChildAt(i);
+
+                        CheckBox check = child.findViewById(R.id.checkboxFeature);
+                        if(check.isChecked()){
+                            foundOne = true;
+                        }
+                    }
+
+                    if(!foundOne){
+                        clear.setEnabled(false);
+                    }
+                }
+
             }
         });
 

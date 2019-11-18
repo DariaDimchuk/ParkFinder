@@ -54,6 +54,7 @@ public class SearchByFeature extends AppCompatActivity {
         });
 
         btnClear = findViewById(R.id.btnClear);
+        btnClear.setEnabled(false);
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +135,8 @@ public class SearchByFeature extends AppCompatActivity {
             CheckBox checkbox = child.findViewById(R.id.checkboxFeature);
             checkbox.setChecked(false);
         }
+
+        btnClear.setEnabled(false);
     }
 }
 
