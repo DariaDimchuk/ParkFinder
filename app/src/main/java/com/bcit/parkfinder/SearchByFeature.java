@@ -11,8 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -56,6 +54,7 @@ public class SearchByFeature extends AppCompatActivity {
         });
 
         btnClear = findViewById(R.id.btnClear);
+        btnClear.setEnabled(false);
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +135,8 @@ public class SearchByFeature extends AppCompatActivity {
             CheckBox checkbox = child.findViewById(R.id.checkboxFeature);
             checkbox.setChecked(false);
         }
+
+        btnClear.setEnabled(false);
     }
 }
 
