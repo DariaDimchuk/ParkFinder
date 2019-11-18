@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">ParkFinder</string>
     <string name="appTitleTxt">Van Parks</string>
     <string name="nameSearchTxt">Search by Name</string>
     <string name="locationSearchTxt">Search by Location</string>
