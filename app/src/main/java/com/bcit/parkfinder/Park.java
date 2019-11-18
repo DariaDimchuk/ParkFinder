@@ -1,12 +1,7 @@
 package com.bcit.parkfinder;
 
 
-import android.text.TextUtils;
-
-import com.google.android.gms.common.util.ArrayUtils;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Park implements Serializable
