@@ -1,8 +1,8 @@
 package com.bcit.parkfinder;
 
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -94,10 +94,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                 String streetName = p.getString("streetname");
                                 String streetNumber = p.getString("streetnumber");
 
-                                Park park = new Park(parkId, name, latitude, longitude, washroom,
+                                insertPark(db, parkId, name, latitude, longitude, washroom,
                                         neighbourhoodName, neighbourhoodUrl, streetNumber, streetName);
-
-                                insertPark(db, park);
 
                             // Second Json Data - Park Facilities (Table: PARK_FACILITY)
                             } else if (dataN == 1) {
@@ -105,10 +103,10 @@ public class DBHelper extends SQLiteOpenHelper {
                                 insertParkFacility(db, parkId, facility);
 
                             // Third Json Data - Park Feature (Table: PARK_FEATURE)
-                            } else {
+                            } else if (dataN == 2){
                                 String feature = p.getString("specialfeature");
                                 insertParkFeature(db, parkId, feature);
-                            }
+                            } else {}
                         }
                     } catch (final JSONException e) {
                         Log.e(TAG, "Json parsing/DB conversion error: " + e.getMessage());
@@ -148,17 +146,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-    private void insertPark(SQLiteDatabase db, Park park) {
+    private void insertPark(SQLiteDatabase db, int id, String name, double lat, double lon,
+                            String washroom, String neighbor, String url, String stNum, String stName) {
         ContentValues values = new ContentValues();
-        values.put("PARK_ID", park.getParkId());
-        values.put("NAME", park.getName());
-        values.put("LATITUDE", park.getLatitude());
-        values.put("LONGITUDE", park.getLongitude());
-        values.put("WASHROOM", park.getWashroom());
-        values.put("NEIGHBORHOOD_NAME", park.getNeighbourhoodName());
-        values.put("NEIGHBORHOOD_URL", park.getNeighbourhoodurl());
-        values.put("STREET_NUMBER", park.getStreetNumber());
-        values.put("STREET_NAME", park.getStreetName());
+        values.put("PARK_ID", id);
+        values.put("NAME", name);
+        values.put("LATITUDE", lat);
+        values.put("LONGITUDE", lon);
+        values.put("WASHROOM", washroom);
+        values.put("NEIGHBORHOOD_NAME", neighbor);
+        values.put("NEIGHBORHOOD_URL", url);
+        values.put("STREET_NUMBER", stNum);
+        values.put("STREET_NAME", stName);
 
         db.insert("PARK", null, values);
     }
@@ -225,6 +224,37 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("FAV_PARK", values, "PARK_ID=" + parkId, null);
     }
 
+    void setParkFeatures(SQLiteDatabase db, Park park) {
+        Cursor cursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + park.getParkId(), null);
+        int numFeatures = cursor.getCount();
+        if (cursor.moveToFirst()) {
+            String[] features = new String[numFeatures];
+            for (int i = 0; i < numFeatures; i++) {
+                features[i] = cursor.getString(0);
+                cursor.moveToNext();
+            }
+            park.setFeature(features);
+        }
+    }
+
+    void setParkFacilities(SQLiteDatabase db, Park park) {
+        Cursor cursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + park.getParkId(), null);
+        int numFacilities = cursor.getCount();
+        if (cursor.moveToFirst()) {
+            String[] facilities = new String[numFacilities];
+            for (int i = 0; i < numFacilities; i++) {
+                facilities[i] = cursor.getString(0);
+                cursor.moveToNext();
+            }
+            park.setFacility(facilities);
+        }
+    }
+
+    void setParkFavourite(SQLiteDatabase db, Park park) {
+        Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + park.getParkId(), null);
+        park.setFavourite(favCursor.getCount() > 0);
+    }
+
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(TAG, "DB OldV: " + oldVersion + "\tnewV: " + newVersion);
         try {
@@ -237,15 +267,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 GetParks parkTask = new GetParks();
                 parkTask.execute();
-            }
-
-            // For testing purpose -- To be deleted later
-            if (oldVersion < 2) {
-                insertFavPark(db, 1);
-                insertFavPark(db, 2);
-                insertFavPark(db, 3);
-                insertFavPark(db, 4);
-                insertFavPark(db, 5);
             }
 
         } catch (SQLException sqle) {

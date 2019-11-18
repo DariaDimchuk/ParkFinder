@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,7 +26,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private GoogleMap mMap;
     private Park park;
-    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,14 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         // Retrieve the park info
         Bundle b = intent.getBundleExtra("bundle");
         park = (Park)b.getSerializable("park");
+
+        // Set Facilities, Features, and Favourite information onto the Park object.
+        DBHelper helper = new DBHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        helper.setParkFacilities(db, park);
+        helper.setParkFeatures(db, park);
+        helper.setParkFavourite(db, park);
+
 
         fillTextViews();
         updateFavouriteButtonIconAndText();
@@ -56,40 +66,24 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         TextView nameView = findViewById(R.id.tvDetailName);
         nameView.setText(park.getName());
 
-        // Park coordinates
-        TextView coordinatesView = findViewById(R.id.tvCoordinates);
-        coordinatesView.setText(park.getLatitude() + ", " + park.getLongitude());
-
         TextView addressView = findViewById(R.id.tvAddress);
-        addressView.append(" " + park.getStreetNumber() + " " + park.getStreetName());
-
-        TextView neighbourhoodView = findViewById(R.id.tvNeighbourhoodName);
-        neighbourhoodView.append(" " + park.getNeighbourhoodName());
+        addressView.append(park.getStreetNumber() + " " + park.getStreetName());
 
         TextView neighbourhoodURLView = findViewById(R.id.tvNeighbourhoodURL);
-        neighbourhoodURLView.setText(park.getNeighbourhoodurl());
-
+        String url = "<a href=\"" + park.getNeighbourhoodurl() + "\">" + park.getNeighbourhoodName() +"</a>";
+        neighbourhoodURLView.setText(Html.fromHtml(url));
+        neighbourhoodURLView.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView washroomView = findViewById(R.id.tvWashroom);
-        washroomView.append(" " + park.getWashroom());
+        washroomView.append(park.getWashroomFormattedString());
 
-        TextView facilityView = findViewById(R.id.tvFacility);
-        if(park.getFacility() == null || park.getFacility().length == 0){
-            facilityView.setVisibility(View.GONE);
+        TextView featuresFacilitiesView = findViewById(R.id.tvFeatures);
+        String data[] = park.getCombinedFeaturesFacilities();
+        if(data == null || data.length == 0){
+            featuresFacilitiesView.append("No features or facilities found");
         } else {
-            facilityView.append("\n\n - " + TextUtils.join("\n - ", park.getFacility()));
+            featuresFacilitiesView.append(TextUtils.join("\n", data));
         }
-
-
-
-        TextView featuresView = findViewById(R.id.tvFeatures);
-        if(park.getFeature() == null || park.getFeature().length == 0){
-            featuresView.setVisibility(View.GONE);
-        } else {
-            featuresView.append("\n\n - " + TextUtils.join("\n - ", park.getFeature()));
-        }
-
-        //featuresView.append("\n\n"); //creates space at bottom of view
 
     }
     
@@ -104,7 +98,6 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
             favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.empty_star, 0, 0, 0);
             favouriteButton.setText(R.string.addFavourite);
         }
-
     }
 
 
@@ -118,24 +111,24 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
-    protected void updateFavouritedStatus(){
-        SQLiteOpenHelper helper = new DBHelper(this);
+    protected void updateFavouritedStatus() {
+        DBHelper helper = new DBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
-        DBHelper dbHelper = new DBHelper(this);
 
         if(park.isFavourite()){
             //remove from list
-            System.out.println("REMOVING FROM LIST"); //TODO change to update db
+            System.out.println("REMOVING FROM LIST");
             park.setFavourite(false);
-            dbHelper.removeFavPark(db, park.getParkId());
+            helper.removeFavPark(db, park.getParkId());
         } else{
             //adding to list
-            System.out.println("ADDING TO LIST"); //TODO change to update db
+            System.out.println("ADDING TO LIST");
             park.setFavourite(true);
-            dbHelper.insertFavPark(db, park.getParkId());
+            helper.insertFavPark(db, park.getParkId());
         }
 
         updateFavouriteButtonIconAndText();
     }
+
 
 }
