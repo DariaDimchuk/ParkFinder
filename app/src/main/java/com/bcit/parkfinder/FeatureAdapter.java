@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,6 +50,18 @@ public class FeatureAdapter extends ArrayAdapter<Feature> {
         });
 
         checkbox.setChecked(feature.isChecked());
+
+
+        LinearLayout row = convertView.findViewById(R.id.featureRow);
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBox checkbox = view.findViewById(R.id.checkboxFeature);
+                boolean reversed = !checkbox.isChecked();
+
+                checkbox.setChecked(reversed); //triggers onchange checkbox listener
+            }
+        });
 
         // Return the completed view to render on screen
         return convertView;
