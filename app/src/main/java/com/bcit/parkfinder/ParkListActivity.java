@@ -225,7 +225,6 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             Park park = parkList.get(0);
             location = new LatLng(park.getLatitude(), park.getLongitude());
         }
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f));
     }
 

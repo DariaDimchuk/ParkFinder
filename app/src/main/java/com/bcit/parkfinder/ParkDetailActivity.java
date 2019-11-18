@@ -3,17 +3,13 @@ package com.bcit.parkfinder;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -78,7 +74,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         washroomView.append(park.getWashroomFormattedString());
 
         TextView featuresFacilitiesView = findViewById(R.id.tvFeatures);
-        String data[] = park.getCombinedFeaturesFacilities();
+        String[] data = park.getCombinedFeaturesFacilities();
         if(data == null || data.length == 0){
             featuresFacilitiesView.append("No features or facilities found");
         } else {
