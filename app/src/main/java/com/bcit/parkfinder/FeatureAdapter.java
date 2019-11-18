@@ -13,13 +13,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class FeatureAdapter extends ArrayAdapter<Feature> {
-    Context _context;
 
+    Context _context;
 
     public FeatureAdapter(Context context, ArrayList<Feature> features) {
         super(context, 0, features);
         this._context = context;
-
     }
 
     @Override

@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class SearchByFeature extends AppCompatActivity {
 
     Button btnSearch;
+    Button btnClear;
 
     private ListView lvFeaturesList;
     ArrayList<Feature> featureList;
@@ -51,6 +52,14 @@ public class SearchByFeature extends AppCompatActivity {
                 intent.putExtra("mode", "feature");
                 intent.putStringArrayListExtra("features", chosenFeatures);
                 startActivity(intent);
+            }
+        });
+
+        btnClear = findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllCheckedFeatures();
             }
         });
 
@@ -118,6 +127,15 @@ public class SearchByFeature extends AppCompatActivity {
             }
         }
         return chosenFeatures;
+    }
+
+    private void clearAllCheckedFeatures(){
+        for (int i = 0; i < lvFeaturesList.getLastVisiblePosition() - lvFeaturesList.getFirstVisiblePosition(); i++) {
+            View child = lvFeaturesList.getChildAt(i);
+
+            CheckBox checkbox = child.findViewById(R.id.checkboxFeature);
+            checkbox.setChecked(false);
+        }
     }
 }
 

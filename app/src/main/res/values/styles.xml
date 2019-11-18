@@ -10,4 +10,8 @@
         android:textColorHint="@color/black"
     </style>
 
+    <style name="Button.Gray" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@android:color/darker_gray</item>
+    </style>
+
 </resources>
