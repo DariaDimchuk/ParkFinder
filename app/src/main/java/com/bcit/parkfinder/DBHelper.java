@@ -64,7 +64,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 } catch (final IOException ioe) {
                     Log.e(TAG, "Json parsing error: " + ioe.getMessage());
                 }
-                Log.e(TAG, "Response from url " + dataN + ": " + jsonStr);
 
                 if (jsonStr != null) {
                     try {
@@ -77,7 +76,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         SQLiteDatabase db = helper.getWritableDatabase();
 
                         // looping through All Items
-                        for (int i = 0; i < parkJsonArray.length(); i++) {
+                        int i = 0;
+                        for (i = 0; i < parkJsonArray.length(); i++) {
                             // Park Info
                             JSONObject p = parkJsonArray.getJSONObject(i).getJSONObject("fields");
                             int parkId = p.getInt("parkid");
@@ -108,6 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 insertParkFeature(db, parkId, feature);
                             } else {}
                         }
+                        Log.e(TAG, "Response from dataset " + dataN + ": " + i + " rows created.");
                     } catch (final JSONException e) {
                         Log.e(TAG, "Json parsing/DB conversion error: " + e.getMessage());
                     }
