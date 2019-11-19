@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
+        android:paddingBottom="@dimen/parkDetailPaddingBottom"
         android:id="@+id/parkDetail">
 
 
@@ -19,9 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/parkDetailTitle_SideMargins"
+            android:layout_marginTop="@dimen/parkDetailTitle_MarginTop"
+            android:layout_marginEnd="@dimen/parkDetailTitle_SideMargins"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/BasicBlack"
@@ -36,12 +36,12 @@
             android:layout_height="wrap_content"
             android:layout_row="1"
             android:layout_column="3"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/parkDetailFavBtn_SideMargins"
+            android:layout_marginTop="@dimen/parkDetailFavBtn_MarginTop"
+            android:layout_marginEnd="@dimen/parkDetailFavBtn_SideMargins"
             android:adjustViewBounds="true"
             android:background="@android:drawable/screen_background_light"
-            android:drawableLeft="@drawable/empty_star"
+            android:drawableStart="@drawable/empty_star"
             android:drawablePadding="@dimen/padding5"
             android:paddingLeft="@dimen/padding10"
             android:paddingRight="@dimen/padding10"
@@ -60,8 +60,8 @@
             android:id="@+id/addressIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="@dimen/parkDetailAddressIcon_MarginStart"
+            android:layout_marginTop="@dimen/parkDetailAddressIcon_MarginTop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.042"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,18 +72,18 @@
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/parkDetailAddressTxt_MarginStart"
+            android:layout_marginTop="@dimen/parkDetailAddressTxt_MarginTop"
             android:textSize="@dimen/detailsTxtSize"
             app:layout_constraintStart_toEndOf="@+id/addressIcon"
             app:layout_constraintTop_toTopOf="@+id/addressIcon" />
 
         <ImageView
             android:id="@+id/urlIcon"
-            android:layout_width="32dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="@dimen/parkDetailUrlIcon_Width"
+            android:layout_height="@dimen/parkDetailUrlIcon_Height"
+            android:layout_marginStart="@dimen/parkDetailUrlIcon_MarginStart"
+            android:layout_marginTop="@dimen/parkDetailUrlIcon_MarginTop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/addressIcon"
@@ -94,7 +94,7 @@
             android:id="@+id/tvNeighbourhoodURL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/parkDetailNeighbourhoodUrl_MarginTop"
             android:textSize="@dimen/detailsTxtSize"
             app:layout_constraintStart_toStartOf="@+id/tvAddress"
             app:layout_constraintTop_toTopOf="@+id/urlIcon" />
@@ -104,18 +104,18 @@
             android:id="@+id/washroomIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/parkDetailWashroomIcon_MarginTop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/featuresIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvFeatures"
-            app:srcCompat="@drawable/washroom2" />
+            app:srcCompat="@drawable/washroom" />
 
         <TextView
             android:id="@+id/tvWashroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/parkDetailWashroomTxt_MarginTop"
             android:textSize="@dimen/detailsTxtSize"
             app:layout_constraintStart_toStartOf="@+id/tvFeatures"
             app:layout_constraintTop_toTopOf="@+id/washroomIcon" />
@@ -136,19 +136,11 @@
             android:id="@+id/tvFeatures"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/parkDetailFeaturesTxt_MarginTop"
             android:textSize="@dimen/detailsTxtSize"
             app:layout_constraintStart_toStartOf="@+id/tvNeighbourhoodURL"
             app:layout_constraintTop_toTopOf="@+id/featuresIcon" />
 
-
-
-        <!--    -->
-        <!--    <fragment-->
-        <!--        class="com.google.android.gms.maps.MapFragment"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="match_parent"-->
-        <!--        android:id="@+id/map"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

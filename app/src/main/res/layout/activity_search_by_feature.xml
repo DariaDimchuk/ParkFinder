@@ -8,22 +8,21 @@
     tools:context=".SearchByFeature">
 
     <TextView
-        android:id="@+id/etSearchByLocation"
+        android:id="@+id/tvSearchByFeatureTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/searchByFeatureTitle_MarginTop"
         android:gravity="center"
         android:text="@string/txtFeatureSearch"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="36sp" />
+        android:textSize="@dimen/searchTitleTextSize" />
 
     <ListView
         android:id="@+id/lvFeatureList"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/noSize"
         android:layout_weight="1"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="@dimen/padding10" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +35,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="@dimen/noSize"
             android:layout_height="@dimen/heightSearchBtn"
-            android:paddingBottom="10dp"
+            android:paddingBottom="@dimen/btnPaddingBottom"
             android:layout_weight="1"
             android:text="@string/btnClear" />
 
@@ -45,9 +44,9 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="@dimen/noSize"
             android:layout_height="@dimen/heightSearchBtn"
+            android:paddingBottom="@dimen/btnPaddingBottom"
             android:layout_weight="1"
-            android:text="@string/btnSearch"
-            android:paddingBottom="10dp" />
+            android:text="@string/btnSearch" />
 
     </LinearLayout>
 

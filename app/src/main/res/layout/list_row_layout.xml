@@ -3,31 +3,31 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minHeight="50dp"
-    android:padding="8dp">
+    android:minHeight="@dimen/mapListRow_MinHeight"
+    android:padding="@dimen/mapListRow_Padding">
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvName"
-            android:textSize="18sp"
+            android:textSize="@dimen/mapItemTitleTxtSize"
             android:textColor="@color/BasicBlack"
-            android:paddingTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:paddingTop="@dimen/mapRowItemName_PaddingTop"
+            android:layout_marginBottom="@dimen/mapRowItemName_marginBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-
+            android:layout_marginEnd="@dimen/mapRowItemName_marginEnd"
             android:layout_column="0"
             android:layout_row="1"/>
+
         <TextView
             android:id="@+id/tvAddress"
-            android:paddingBottom="5dp"
+            android:paddingBottom="@dimen/mapRowItemAddress_PaddingBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-
+            android:layout_marginEnd="@dimen/mapRowItemAddress_MarginEnd"
             android:layout_column="0"
             android:layout_row="2"/>
 
@@ -36,11 +36,12 @@
             android:background="@drawable/info"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/mapRowItemInfoBtn_MarginEnd"
+            android:layout_marginTop="@dimen/mapRowItemInfoBtn_MarginTop"
             android:layout_rowSpan="2"
             android:layout_column="3"
             android:layout_row="1"
+            android:contentDescription="@string/btnInfo_ContentDescription"
             android:focusable="false">
         </ImageButton>
     </GridLayout>

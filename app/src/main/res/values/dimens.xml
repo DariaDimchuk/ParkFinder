@@ -8,12 +8,97 @@
     <dimen name="padding5">5dp</dimen>
 
 
+    <dimen name="detailsTxtSize">18sp</dimen>
+    <dimen name="mapItemTitleTxtSize">18sp</dimen>
+    <dimen name="searchTitleTextSize">36sp</dimen>
+    <dimen name="parkTitleSize">30sp</dimen>
+    <dimen name="favouritesBtnTxtSize">15sp</dimen>
+    <dimen name="noResultTxtSize">18sp</dimen>
 
-    
-    <dimen name="parkTitleSize">30dp</dimen>
-    <dimen name="favouritesBtnTxtSize">15dp</dimen>
 
-    <dimen name="detailsTxtSize">18dp</dimen>
+    <dimen name="searchTitleWidth">342dp</dimen>
+    <dimen name="searchTitleHeight">53dp</dimen>
+    <dimen name="searchTitleMarginTop">150dp</dimen>
+
+
     <dimen name="addressToFeaturesDistance">54dp</dimen>
+
+
+
+
+
+    <dimen name="mainTitleTextHeight">52dp</dimen>
+    <dimen name="mainTitleMarginTop">32dp</dimen>
+    <dimen name="mainTitleTextSize">42sp</dimen>
+
+
+    <dimen name="parkDetailPaddingBottom">50dp</dimen>
+
+    <dimen name="parkDetailTitle_SideMargins">16dp</dimen>
+    <dimen name="parkDetailTitle_MarginTop">32dp</dimen>
+
+    <dimen name="parkDetailFavBtn_MarginTop">24dp</dimen>
+    <dimen name="parkDetailFavBtn_SideMargins">16dp</dimen>
+
+    <dimen name="parkDetailAddressIcon_MarginStart">8dp</dimen>
+    <dimen name="parkDetailAddressIcon_MarginTop">24dp</dimen>
+
+
+    <dimen name="parkDetailAddressTxt_MarginStart">16dp</dimen>
+    <dimen name="parkDetailAddressTxt_MarginTop">8dp</dimen>
+
+
+    <dimen name="parkDetailUrlIcon_Height">33dp</dimen>
+    <dimen name="parkDetailUrlIcon_Width">32dp</dimen>
+    <dimen name="parkDetailUrlIcon_MarginStart">2dp</dimen>
+    <dimen name="parkDetailUrlIcon_MarginTop">16dp</dimen>
+
+    <dimen name="parkDetailNeighbourhoodUrl_MarginTop">4dp</dimen>
+
+    <dimen name="parkDetailWashroomIcon_MarginTop">24dp</dimen>
+    <dimen name="parkDetailWashroomTxt_MarginTop">8dp</dimen>
+
+
+    <dimen name="parkDetailFeaturesTxt_MarginTop">8dp</dimen>
+
+
+
+    <dimen name="noResult_Margin">10dp</dimen>
+
+
+
+    <dimen name="searchByFeatureTitle_MarginTop">40dp</dimen>
+
+    <dimen name="searchByLocationSpinner_Width">312dp</dimen>
+    <dimen name="searchByLocationSpinner_Height">38dp</dimen>
+    <dimen name="searchByLocationSpinner_MarginTop">250dp</dimen>
+    <dimen name="searchByLocationSearchBtn_MarginTop">30dp</dimen>
+
+
+    <dimen name="searchByNameInput_Width">312dp</dimen>
+    <dimen name="searchByNameInput_Height">45dp</dimen>
+    <dimen name="searchByNameInput_MarginTop">250dp</dimen>
+    <dimen name="searchByNameSearchBtn_MarginTop">30dp</dimen>
+
+
+    <dimen name="featureRow_Padding">10dp</dimen>
+    <dimen name="feature_PaddingTop">5dp</dimen>
+    <dimen name="feature_MarginBottom">5dp</dimen>
+    <dimen name="feature_MarginEnd">10dp</dimen>
+
+
+    <dimen name="mapListRow_MinHeight">50dp</dimen>
+    <dimen name="mapListRow_Padding">8dp</dimen>
+
+    <dimen name="mapRowItemName_PaddingTop">5dp</dimen>
+    <dimen name="mapRowItemName_marginBottom">5dp</dimen>
+    <dimen name="mapRowItemName_marginEnd">10dp</dimen>
+    <dimen name="mapRowItemAddress_PaddingBottom">5dp</dimen>
+    <dimen name="mapRowItemAddress_MarginEnd">10dp</dimen>
+    <dimen name="mapRowItemInfoBtn_MarginEnd">5dp</dimen>
+    <dimen name="mapRowItemInfoBtn_MarginTop">10dp</dimen>
+
+
+    <dimen name="btnPaddingBottom">10dp</dimen>
 
 </resources>

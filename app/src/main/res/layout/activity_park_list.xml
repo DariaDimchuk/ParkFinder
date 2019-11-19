@@ -22,10 +22,10 @@
 
     <TextView
         android:id="@+id/tvNoResult"
-        android:textSize="18sp"
+        android:textSize="@dimen/noResultTxtSize"
         android:gravity="center"
         android:visibility="gone"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/noResult_Margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/noParkFound"/>
