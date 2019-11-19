@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="noSize">0dp</dimen>
+
     <dimen name="widthSearchBtn">200dp</dimen>
     <dimen name="heightSearchBtn">50dp</dimen>
     <dimen name="padding10">10dp</dimen>
