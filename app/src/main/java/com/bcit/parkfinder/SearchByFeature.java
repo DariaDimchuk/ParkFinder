@@ -65,6 +65,15 @@ public class SearchByFeature extends AppCompatActivity {
         new GetFeaturesTask().execute();
     }
 
+    @Override
+    public void onRestart() {
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        super.onRestart();
+        btnClear.setEnabled(!getChosenFeatures().isEmpty());
+
+    }
+
+
 
     /**
      * Async task class to get SQL query result from DB
