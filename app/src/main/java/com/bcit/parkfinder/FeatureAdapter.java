@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static com.bcit.parkfinder.SearchByFeature.featureList;
+
 public class FeatureAdapter extends ArrayAdapter<Feature> {
 
     Context _context;
@@ -66,20 +68,16 @@ public class FeatureAdapter extends ArrayAdapter<Feature> {
 
                 Button clear = ((Activity) _context).findViewById(R.id.btnClear);
                 //if at least one checkbox is on, clear button should be enabled
-                if(reversed == true){
+                if(reversed){
                     clear.setEnabled(true);
                 } else {
                     //check - if no checkboxes are on, disable clear button
 
                     ListView lvFeaturesList = ((Activity) _context).findViewById(R.id.lvFeatureList);
                     boolean foundOne = false;
-                    for (int i = 0; i < lvFeaturesList.getLastVisiblePosition() - lvFeaturesList.getFirstVisiblePosition(); i++) {
-                        View child = lvFeaturesList.getChildAt(i);
-
-                        CheckBox check = child.findViewById(R.id.checkboxFeature);
-                        if(check.isChecked()){
+                    for (Feature feature: featureList) {
+                        if(feature.isChecked())
                             foundOne = true;
-                        }
                     }
 
                     if(!foundOne){

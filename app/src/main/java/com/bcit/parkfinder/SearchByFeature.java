@@ -24,7 +24,7 @@ public class SearchByFeature extends AppCompatActivity {
     Button btnClear;
 
     private ListView lvFeaturesList;
-    ArrayList<Feature> featureList;
+    public static ArrayList<Feature> featureList;
 
     private SQLiteDatabase db;
 
@@ -138,15 +138,16 @@ public class SearchByFeature extends AppCompatActivity {
     }
 
     private void clearAllCheckedFeatures(){
-        for (int i = 0; i < lvFeaturesList.getLastVisiblePosition() - lvFeaturesList.getFirstVisiblePosition(); i++) {
-            View child = lvFeaturesList.getChildAt(i);
 
-            CheckBox checkbox = child.findViewById(R.id.checkboxFeature);
-            checkbox.setChecked(false);
+        for (Feature feature: featureList) {
+            feature.setChecked(false);
         }
+        FeatureAdapter adapter = new FeatureAdapter(SearchByFeature.this, featureList);
+        lvFeaturesList.setAdapter(adapter);
 
         btnClear.setEnabled(false);
     }
+
 }
 
 
