@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +26,6 @@ public class SearchByLocation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_by_location);
-
 
         spLocation = findViewById(R.id.spLocation);
         String[] locations = getLocations();
@@ -61,6 +59,10 @@ public class SearchByLocation extends AppCompatActivity {
         });
     }
 
+    /**
+     * Gets all neighborhood names from PARK table and appends them to a list.
+     * @return String[] list of all neighborhood names in PARK table.
+     */
     private String[] getLocations() {
         SQLiteOpenHelper helper = new DBHelper(this);
         SQLiteDatabase db;

@@ -131,6 +131,10 @@ public class DBHelper extends SQLiteOpenHelper {
         updateMyDatabase(sqLiteDatabase, i, i1);
     }
 
+    /**
+     * Creates PARK table to store data obtained from JSON Park data.
+     * @return String statement to create Park Table
+     */
     private String getCreateParkTableSql() {
         String sql = "";
         sql += "CREATE TABLE PARK (";
@@ -147,6 +151,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
+    /**
+     * Inserts a record into the PARK Table.
+     * @param db SQLiteDatabase
+     * @param id int id of the Park
+     * @param name String name of the Park
+     * @param lat double latitude coordinate of the Park
+     * @param lon double longitude coordinate of the Park
+     * @param washroom String describing if Park contains washroom
+     * @param neighbor String neighborhood the Park exists in
+     * @param url String url of the neighborhood the Park exists in
+     * @param stNum String street number of the Park
+     * @param stName String street name of the Park
+     */
     private void insertPark(SQLiteDatabase db, int id, String name, double lat, double lon,
                             String washroom, String neighbor, String url, String stNum, String stName) {
         ContentValues values = new ContentValues();
@@ -163,6 +180,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("PARK", null, values);
     }
 
+    /**
+     * Creates PARK_FACILITY table to store data obtained from the JSON Park data.
+     * @return String statement to create PARK_FACILITY Table
+     */
     private String getCreateParkFacilityTableSql() {
         String sql = "";
         sql += "CREATE TABLE PARK_FACILITY (";
@@ -174,6 +195,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
+    /**
+     * Inserts a record into the PARK_FACILITY Table.
+     * @param db SQLiteDatabase object
+     * @param park_id int Park Id
+     * @param facility String name of Park facility
+     */
     private void insertParkFacility(SQLiteDatabase db, int park_id, String facility) {
         ContentValues values = new ContentValues();
         values.put("PARK_ID", park_id);
@@ -182,6 +209,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("PARK_FACILITY", null, values);
     }
 
+    /**
+     * Creates PARK_FEATURE Table.
+     * @return String statement to create PARK_FEATURE
+     */
     private String getCreateParkFeatureTableSql() {
         String sql = "";
         sql += "CREATE TABLE PARK_FEATURE (";
@@ -193,6 +224,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return sql;
     }
 
+    /**
+     * Inserts record into the PARK_FEATURE table.
+     * @param db SQLiteDatabase object
+     * @param park_id int Park id
+     * @param feature String name of Park feature
+     */
     private void insertParkFeature(SQLiteDatabase db, int park_id, String feature) {
         ContentValues values = new ContentValues();
         values.put("PARK_ID", park_id);
@@ -201,6 +238,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("PARK_FEATURE", null, values);
     }
 
+    /**
+     * Creates FAV_PARK table to store user favourited Parks.
+     * @return String statement to create FAV_PARK table
+     */
     private String getCreateFavParkTableSql() {
         String sql = "";
         sql += "CREATE TABLE FAV_PARK (";
@@ -213,20 +254,35 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Inserts a record into the FAV_PARK table.
+     * @param db SQLiteDatabase object
+     * @param parkId int Park id
+     */
     public void insertFavPark(SQLiteDatabase db, int parkId) {
         ContentValues values = new ContentValues();
         values.put("PARK_ID", parkId);
         db.insert("FAV_PARK", null, values);
     }
 
+    /**
+     * Soft deletes record in FAV_PARK table by updating the DELETED column to 1.
+     * @param db SQLiteDatabase object
+     * @param parkId int Park id
+     */
     public void removeFavPark(SQLiteDatabase db, int parkId) {
         ContentValues values = new ContentValues();
         values.put("DELETED", 1);
         db.update("FAV_PARK", values, "PARK_ID=" + parkId, null);
     }
 
+    /**
+     * Queries PARK_FEATURE and updates Park's feature attribute with features.
+     * @param db SQLiteDatabase object
+     * @param park Park object
+     */
     void setParkFeatures(SQLiteDatabase db, Park park) {
-        Cursor cursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + park.getParkId(), null);
+        Cursor cursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + park.getParkId(), null);
         int numFeatures = cursor.getCount();
         if (cursor.moveToFirst()) {
             String[] features = new String[numFeatures];
@@ -238,8 +294,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Queries PARK_FACILITY and updates Park's facility attribute with facilities.
+     * @param db SQLiteDatabase object
+     * @param park Park object
+     */
     void setParkFacilities(SQLiteDatabase db, Park park) {
-        Cursor cursor = db.rawQuery("SELECT FEATURE FROM PARK_FEATURE WHERE PARK_ID = " + park.getParkId(), null);
+        Cursor cursor = db.rawQuery("SELECT FACILITY FROM PARK_FACILITY WHERE PARK_ID = " + park.getParkId(), null);
         int numFacilities = cursor.getCount();
         if (cursor.moveToFirst()) {
             String[] facilities = new String[numFacilities];
@@ -251,11 +312,22 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Sets the Park object's favourite attribute if found in the FAV_PARK table.
+     * @param db SQLiteDatabase object
+     * @param park Park object
+     */
     void setParkFavourite(SQLiteDatabase db, Park park) {
         Cursor favCursor = db.rawQuery("SELECT FAV_ID FROM FAV_PARK WHERE DELETED = 0 AND PARK_ID = " + park.getParkId(), null);
         park.setFavourite(favCursor.getCount() > 0);
     }
 
+    /**
+     * Update database version numbers and recreates tables containing updated park data.
+     * @param db SQLiteDatabase object
+     * @param oldVersion int old version of the database
+     * @param newVersion int new version of the database
+     */
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(TAG, "DB OldV: " + oldVersion + "\tnewV: " + newVersion);
         try {

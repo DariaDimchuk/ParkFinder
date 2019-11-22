@@ -45,7 +45,7 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_list);
 
-        Intent intent = getIntent();    //creator
+        Intent intent = getIntent();  //creator
         mode = intent.getStringExtra("mode") == null ? "" : intent.getStringExtra("mode");
         if (mode.equals("feature") ) {
             features = intent.getStringArrayListExtra("features");
@@ -94,17 +94,20 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
             try {
                 parkList.clear();
                 db = helper.getReadableDatabase();
-
+                    // Select parks with name obtained from SearchByName activity
                 String whereSQL = "";
                 if (mode.equals("name")) {
                     whereSQL = " WHERE NAME LIKE '%" + keyword + "%'";
 
+                    // Select parks with neighborhood name obtained from SearchByLocation activity
                 } else if (mode.equals("location")) {
                     whereSQL = " WHERE NEIGHBORHOOD_NAME = '" + keyword + "'";
 
+                    // Select parks from favourited parks table
                 } else if (mode.equals("favourite")) {
                     whereSQL = " WHERE PARK_ID IN (SELECT PARK_ID FROM FAV_PARK WHERE DELETED = 0)";
 
+                    // Select parks with chosen features obtained from SearchByFeatures activity
                 } else if (mode.equals("feature") && features.size() > 0) {
                     baseSQL = "SELECT DISTINCT P.PARK_ID, NAME, LATITUDE, LONGITUDE, WASHROOM," +
                         " NEIGHBORHOOD_NAME, NEIGHBORHOOD_URL, STREET_NUMBER, STREET_NAME FROM PARK P " +
@@ -169,10 +172,10 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
                 // Attach the adapter to a ListView
                 lvParksList.setAdapter(adapter);
 
-                // adds all park markers to the map fragment
+                // Adds all park markers to the map fragment
                 addAllParkMarkers();
 
-                // move camera position to location of chosen park
+                // Move camera position to location of chosen park
                 lvParksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,6 +197,9 @@ public class ParkListActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+    /**
+     * Adds all park markers obtained from SQL query.
+     */
     public void addAllParkMarkers() {
 
         boolean ready = false;

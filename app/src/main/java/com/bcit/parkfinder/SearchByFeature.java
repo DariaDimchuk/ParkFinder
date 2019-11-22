@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,8 +25,6 @@ public class SearchByFeature extends AppCompatActivity {
     private ListView lvFeaturesList;
     public static ArrayList<Feature> featureList;
 
-    private SQLiteDatabase db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +33,7 @@ public class SearchByFeature extends AppCompatActivity {
         final ArrayList<Feature> chosenFeatures = new ArrayList<Feature>();
         lvFeaturesList = findViewById(R.id.lvFeatureList);
 
+        // Search button sends chosen features to ParkListActivity
         btnSearch = findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +51,7 @@ public class SearchByFeature extends AppCompatActivity {
             }
         });
 
+        // Clear All button un-checks all chosen features
         btnClear = findViewById(R.id.btnClear);
         btnClear.setEnabled(false);
         btnClear.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +71,6 @@ public class SearchByFeature extends AppCompatActivity {
         btnClear.setEnabled(!getChosenFeatures().isEmpty());
 
     }
-
 
 
     /**
@@ -126,6 +124,10 @@ public class SearchByFeature extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds all Features with true setChecked values to an ArrayList of chosen features.
+     * @return ArrayList<String> of chosen Features
+     */
     private ArrayList<String> getChosenFeatures(){
 
         ArrayList<String> chosenFeatures = new ArrayList<String>();
@@ -137,11 +139,15 @@ public class SearchByFeature extends AppCompatActivity {
         return chosenFeatures;
     }
 
-    private void clearAllCheckedFeatures(){
+    /**
+     * Set the setChecked attribute of all Features to false and disable the btnClear.
+     */
+    private void clearAllCheckedFeatures() {
 
         for (Feature feature: featureList) {
             feature.setChecked(false);
         }
+
         FeatureAdapter adapter = new FeatureAdapter(SearchByFeature.this, featureList);
         lvFeaturesList.setAdapter(adapter);
 

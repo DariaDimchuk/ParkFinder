@@ -45,6 +45,7 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         fillTextViews();
         updateFavouriteButtonIconAndText();
 
+        // Attaches functionality to the favourite button, allowing users to favourite parks.
         Button favoritesButton = findViewById(R.id.btnFavorite);
         favoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +57,10 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-
+    /**
+     * Fills all TextViews on the ParkDetail activity with information such as the name of the park,
+     * the neighborhood that the park is located in, and the park's features/facilites.
+     */
     protected void fillTextViews(){
         // Park name
         TextView nameView = findViewById(R.id.tvDetailName);
@@ -82,8 +86,10 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         }
 
     }
-    
-    
+
+    /**
+     * Updates the Favourite Icon with a different text and appearance when it is toggled.
+     */
     protected void updateFavouriteButtonIconAndText(){
         Button favouriteButton = findViewById(R.id.btnFavorite);
 
@@ -107,6 +113,9 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parkLocation, 12.5f));
     }
 
+    /**
+     * Sets the Park's favourite status.
+     */
     protected void updateFavouritedStatus() {
         DBHelper helper = new DBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();

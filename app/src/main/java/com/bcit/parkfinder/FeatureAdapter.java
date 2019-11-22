@@ -35,10 +35,12 @@ public class FeatureAdapter extends ArrayAdapter<Feature> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.feature_list_layout, parent, false);
         }
 
+        // Set text of the TextView to the Feature name
         final Feature feature = getItem(position);
         TextView tvFeature = convertView.findViewById(R.id.tvFeature);
         tvFeature.setText(feature.getFeatureName());
 
+        // Attach onCheckChangedListener to update setChecked value of Features
         final CheckBox checkbox = convertView.findViewById(R.id.checkboxFeature);
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -55,7 +57,8 @@ public class FeatureAdapter extends ArrayAdapter<Feature> {
 
         checkbox.setChecked(feature.isChecked());
 
-
+        // Attach onClickListener to row in ArrayList allowing user to click entire row to check
+        // select a Feature
         LinearLayout row = convertView.findViewById(R.id.featureRow);
         row.setOnClickListener(new View.OnClickListener() {
             @Override

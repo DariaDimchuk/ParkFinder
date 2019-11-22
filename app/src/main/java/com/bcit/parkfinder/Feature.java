@@ -5,6 +5,10 @@ class Feature {
     private String featureName;
     private boolean checked;
 
+    /**
+     * Creates a new feature object.
+     * @param featureName name of the feature
+     */
     public Feature(String featureName) {
         this.featureName = featureName;
         this.checked = false;
