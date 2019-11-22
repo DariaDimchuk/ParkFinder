@@ -3,8 +3,11 @@ package com.bcit.parkfinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+<<<<<<< HEAD
+=======
 import android.content.res.Configuration;
 import android.database.Cursor;
+>>>>>>> OPTIONAL- on flip, the background image changes to a resized one
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
