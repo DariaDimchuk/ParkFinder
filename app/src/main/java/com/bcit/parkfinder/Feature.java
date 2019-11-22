@@ -14,19 +14,24 @@ class Feature {
         this.checked = false;
     }
 
+    /* Getters */
+
     public String getFeatureName() {
         return featureName;
-    }
-
-    public void setFeatureName(String featureName) {
-        this.featureName = featureName;
     }
 
     public boolean isChecked() {
         return checked;
     }
 
+    /* Setters */
+
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
+    }
+
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+    
 }

@@ -41,7 +41,6 @@ public class ParksAdapter extends ArrayAdapter<Park> {
         tvTitle.setText(park.getName());
         tvAddress.setText(park.getStreetNumber() + " " + park.getStreetName());
 
-
         ImageButton detailsIcon = convertView.findViewById(R.id.btnInfoDetails);
         detailsIcon.setFocusable(false); //allows click listener for list row to work
 
