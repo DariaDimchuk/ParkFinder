@@ -3,7 +3,7 @@
 
 The city of Vancouver has more than 200 parks. However, there is no easy solution to find a park with the specific combinations of amenities you want; Features such as dog off-leash area, tennis court, playground etc. VanParks offers a way to search for parks with over 40 specific features to choose from. In addition, a user can search a park by name and neighborhood, and add them to their favourites! VanParks helps people to find parks they want easily and effectively and aims to promote active community and involvement in the city of Vancouver.
 
-
+![ic_launcher](./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 
 ## Built With
