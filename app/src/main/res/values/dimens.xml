@@ -100,5 +100,6 @@
 
 
     <dimen name="btnPaddingBottom">10dp</dimen>
+    <dimen name="mainConstraint_paddingBottom">50dp</dimen>
 
 </resources>
