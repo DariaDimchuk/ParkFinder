@@ -1,51 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    tools:context=".SearchByName"
     android:layout_height="match_parent"
-    tools:context=".SearchByName">
+    android:layout_width="match_parent"
+    android:fillViewport="true" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/parkDetailPaddingBottom"
+        tools:context=".SearchByName"
+        android:id="@+id/searchByName">
 
 
-    <TextView
-        android:id="@+id/tvSearchByName"
-        android:layout_width="@dimen/searchTitleWidth"
-        android:layout_height="@dimen/searchTitleHeight"
-        android:layout_marginTop="@dimen/searchTitleMarginTop"
-        android:gravity="center"
-        android:text="@string/nameSearchTxt"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/searchTitleTextSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+        <TextView
+            android:id="@+id/tvSearchByName"
+            android:layout_width="@dimen/searchTitleWidth"
+            android:layout_height="@dimen/searchTitleHeight"
+            android:layout_marginTop="@dimen/searchTitleMarginTop"
+            android:gravity="center"
+            android:text="@string/nameSearchTxt"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/searchTitleTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.02" />
 
-    <EditText
-        android:id="@+id/etParkName"
-        android:layout_width="@dimen/searchByNameInput_Width"
-        android:layout_height="@dimen/searchByNameInput_Height"
-        android:layout_marginTop="@dimen/searchByNameInput_MarginTop"
-        android:hint="@string/parkName"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03" />
+        <EditText
+            android:id="@+id/etParkName"
+            android:layout_width="@dimen/searchByNameInput_Width"
+            android:layout_height="@dimen/searchByNameInput_Height"
+            android:layout_marginTop="@dimen/searchByNameInput_MarginTop"
+            android:hint="@string/parkName"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03" />
 
-    <Button
-        android:id="@+id/btnSearch"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:layout_marginTop="@dimen/searchByNameSearchBtn_MarginTop"
-        android:text="@string/btnSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etParkName" />
+        <Button
+            android:id="@+id/btnSearch"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:layout_marginTop="@dimen/searchByNameSearchBtn_MarginTop"
+            android:text="@string/btnSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etParkName" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
