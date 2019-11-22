@@ -7,12 +7,16 @@ The city of Vancouver has more than 200 parks. However, there is no easy solutio
 ## Built With
 
 * [Vancouver Open Data] 
-1.Parks (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300")
-2.Facilities("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-facilities&rows=1000")           
-3.Features("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100")
-* [AndroidStudio](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [SQLite](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+1. Parks (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300")
+2. Facilities ("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-facilities&rows=1000")  
+3. Features ("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100")
+
+* [SQLite]
+DB Version 1.0
+PARK
+PARK_FACILITY
+PARK_FEATURE
+FAV_PARKS
 
 
 ## Authors
@@ -21,4 +25,3 @@ The city of Vancouver has more than 200 parks. However, there is no easy solutio
 * **Daria Dimchuk** - (https://github.com/DariaDimchuk)
 * **Robert Ozdoba** - (https://github.com/rozdoba)
 ```
-
