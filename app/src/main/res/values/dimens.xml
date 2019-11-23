@@ -18,7 +18,7 @@
 
     <dimen name="searchTitleWidth">342dp</dimen>
     <dimen name="searchTitleHeight">53dp</dimen>
-    <dimen name="searchTitleMarginTop">150dp</dimen>
+    <dimen name="searchTitleMarginTop">100dp</dimen>
 
 
     <dimen name="addressToFeaturesDistance">54dp</dimen>
@@ -71,13 +71,13 @@
 
     <dimen name="searchByLocationSpinner_Width">312dp</dimen>
     <dimen name="searchByLocationSpinner_Height">38dp</dimen>
-    <dimen name="searchByLocationSpinner_MarginTop">250dp</dimen>
+    <dimen name="searchByLocationSpinner_MarginTop">200dp</dimen>
     <dimen name="searchByLocationSearchBtn_MarginTop">30dp</dimen>
 
 
     <dimen name="searchByNameInput_Width">312dp</dimen>
     <dimen name="searchByNameInput_Height">45dp</dimen>
-    <dimen name="searchByNameInput_MarginTop">250dp</dimen>
+    <dimen name="searchByNameInput_MarginTop">200dp</dimen>
     <dimen name="searchByNameSearchBtn_MarginTop">30dp</dimen>
 
 
