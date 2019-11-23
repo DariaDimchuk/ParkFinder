@@ -14,8 +14,7 @@ The city of Vancouver has more than 200 parks. However, there is no easy solutio
 3. Features (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100)
 
 * [SQLite]
-  - DB Version 1.0
-When launching the app for the first time, it will create the following four tables off of the Vancouver Open Data(JSON).
+  - DB Version 1.0: When launching the app for the first time, it will create the following four tables off of the Vancouver Open Data(JSON).
     - PARK
     - PARK_FACILITY
     - PARK_FEATURE
