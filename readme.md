@@ -9,17 +9,20 @@ The city of Vancouver has more than 200 parks. However, there is no easy solutio
 ## Built With
 
 * [Vancouver Open Data] 
-1. Parks (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300")
-2. Facilities ("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-facilities&rows=1000")  
-3. Features ("https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100")
+1. Parks (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks&rows=300)
+2. Facilities (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-facilities&rows=1000)  
+3. Features (https://opendata.vancouver.ca/api/records/1.0/search/?dataset=parks-special-features&rows=100)
 
 * [SQLite]
-- DB Version 1.0
-- PARK
-- PARK_FACILITY
-- PARK_FEATURE
-- FAV_PARKS
+  - DB Version 1.0
+When launching the app for the first time, it will create the following four tables off of the Vancouver Open Data(JSON).
+    - PARK
+    - PARK_FACILITY
+    - PARK_FEATURE
+    - FAV_PARK
+
 * [Google Maps API]
+  - com.google.android.gms:play-services-maps:16.1.0
 
 ## Features
 
@@ -33,9 +36,8 @@ The city of Vancouver has more than 200 parks. However, there is no easy solutio
 
 ## Android Version
 
-- Compatible with
-  - (Marshmellow 6.0) - API 23
-  - (Q 3.0) - API 29
+- Minimum SDK version: 23 (Lollipop)
+- Target SDK version: 29 (Q)
 
 
 ## Authors
