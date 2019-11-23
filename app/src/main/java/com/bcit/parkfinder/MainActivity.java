@@ -3,6 +3,8 @@ package com.bcit.parkfinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(sqle+"");
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        View v = findViewById(R.id.mainView);
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            v.setBackground(getDrawable(R.drawable.background_landscape));
+        } else {
+            v.setBackground(getDrawable(R.drawable.background));
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

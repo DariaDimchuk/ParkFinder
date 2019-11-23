@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context=".MainActivity">
+    android:layout_width="match_parent"
+    android:fillViewport="true" >
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/mainTitleTextHeight"
-        android:layout_marginTop="@dimen/mainTitleMarginTop"
-        android:text="@string/appTitleTxt"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/white"
-        android:textSize="@dimen/mainTitleTextSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:paddingBottom="@dimen/mainConstraint_paddingBottom"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnFeatureSearch"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/txtFeatureSearch"
-        android:onClick="onClickSearchByFeature"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.1" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/mainTitleTextHeight"
+            android:layout_marginTop="@dimen/mainTitleMarginTop"
+            android:text="@string/appTitleTxt"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/mainTitleTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.044" />
 
-    <Button
-        android:id="@+id/btnLocSearch"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/locationSearchTxt"
-        android:onClick="onClickSearchByLocation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnFeatureSearch"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnFeatureSearch"
-        app:layout_constraintTop_toBottomOf="@+id/btnFeatureSearch"
-        app:layout_constraintVertical_bias="0.053" />
+        <Button
+            android:id="@+id/btnFeatureSearch"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:onClick="onClickSearchByFeature"
+            android:text="@string/txtFeatureSearch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.1" />
 
-    <Button
-        android:id="@+id/btnNameSearch"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/nameSearchTxt"
-        android:onClick="onClickSearchByName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnLocSearch"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnLocSearch"
-        app:layout_constraintTop_toBottomOf="@+id/btnLocSearch"
-        app:layout_constraintVertical_bias="0.063" />
+        <Button
+            android:id="@+id/btnLocSearch"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:onClick="onClickSearchByLocation"
+            android:text="@string/locationSearchTxt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnFeatureSearch"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/btnFeatureSearch"
+            app:layout_constraintTop_toBottomOf="@+id/btnFeatureSearch"
+            app:layout_constraintVertical_bias="0.053" />
 
-    <Button
-        android:id="@+id/btnSeeAll"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/txtSeeAll"
-        android:onClick="onClickSeeAll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnFeatureSearch"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnFeatureSearch"
-        app:layout_constraintTop_toBottomOf="@+id/btnFeatureSearch"
-        app:layout_constraintVertical_bias="0.495" />
+        <Button
+            android:id="@+id/btnNameSearch"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:onClick="onClickSearchByName"
+            android:text="@string/nameSearchTxt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnLocSearch"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/btnLocSearch"
+            app:layout_constraintTop_toBottomOf="@+id/btnLocSearch"
+            app:layout_constraintVertical_bias="0.063" />
 
-    <Button
-        android:id="@+id/btnSeeFavourites"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="@dimen/widthSearchBtn"
-        android:layout_height="@dimen/heightSearchBtn"
-        android:text="@string/txtSeeFavourites"
-        android:onClick="onClickSeeFavourites"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnSeeAll"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="@+id/btnSeeAll"
-        app:layout_constraintTop_toBottomOf="@+id/btnSeeAll"
-        app:layout_constraintVertical_bias="0.113" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnSeeAll"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:onClick="onClickSeeAll"
+            android:text="@string/txtSeeAll"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnNameSearch"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/btnNameSearch"
+            app:layout_constraintTop_toBottomOf="@+id/btnNameSearch"
+            app:layout_constraintVertical_bias="0.239" />
+
+        <Button
+            android:id="@+id/btnSeeFavourites"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="@dimen/widthSearchBtn"
+            android:layout_height="@dimen/heightSearchBtn"
+            android:onClick="onClickSeeFavourites"
+            android:text="@string/txtSeeFavourites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnSeeAll"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="@+id/btnSeeAll"
+            app:layout_constraintTop_toBottomOf="@+id/btnSeeAll"
+            app:layout_constraintVertical_bias="0.113" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
+
