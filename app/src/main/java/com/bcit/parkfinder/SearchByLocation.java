@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SearchByLocation extends AppCompatActivity {
@@ -40,8 +39,7 @@ public class SearchByLocation extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView item = (TextView) view;
-                keyword = item.getText().toString();
+                keyword = (String)adapterView.getSelectedItem();
             }
 
             @Override
@@ -61,6 +59,7 @@ public class SearchByLocation extends AppCompatActivity {
             }
         });
     }
+
 
     /**
      * Gets all neighborhood names from PARK table and appends them to a list.
