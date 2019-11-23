@@ -66,17 +66,21 @@ public class ParkDetailActivity extends AppCompatActivity implements OnMapReadyC
         TextView nameView = findViewById(R.id.tvDetailName);
         nameView.setText(park.getName());
 
+        // populate address of park (street number + street name)
         TextView addressView = findViewById(R.id.tvAddress);
         addressView.append(park.getStreetNumber() + " " + park.getStreetName());
 
+        // populate neighbourhood url
         TextView neighbourhoodURLView = findViewById(R.id.tvNeighbourhoodURL);
         String url = "<a href=\"" + park.getNeighbourhoodurl() + "\">" + park.getNeighbourhoodName() +"</a>";
         neighbourhoodURLView.setText(Html.fromHtml(url));
         neighbourhoodURLView.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // populate washroom view with detail describing availability
         TextView washroomView = findViewById(R.id.tvWashroom);
         washroomView.append(park.getWashroomFormattedString());
 
+        // populate features and facilities TextView if data is found otherwise append message
         TextView featuresFacilitiesView = findViewById(R.id.tvFeatures);
         String[] data = park.getCombinedFeaturesFacilities();
         if(data == null || data.length == 0){

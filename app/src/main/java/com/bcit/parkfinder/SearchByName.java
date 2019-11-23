@@ -20,6 +20,8 @@ public class SearchByName extends AppCompatActivity {
 
         etParkName = findViewById(R.id.etParkName);
         btnSearch = findViewById(R.id.btnSearch);
+
+        // send keyword containing park name through intent to ParkListActivity
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

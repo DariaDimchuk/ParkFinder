@@ -27,9 +27,11 @@ public class SearchByLocation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_by_location);
 
+        // get neighborhoods from PARK table
         spLocation = findViewById(R.id.spLocation);
         String[] locations = getLocations();
 
+        // attach ArrayAdapter containing neighborhoods to spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -47,6 +49,7 @@ public class SearchByLocation extends AppCompatActivity {
             }
         });
 
+        // send chosen neighborhood to ParkListAcivity through intent
         btnSearch = findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
